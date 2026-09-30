@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Akses Masuk | SIM-Inspektorat Kabupaten Serang</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style> body { font-family: 'Plus Jakarta Sans', sans-serif; } </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex items-center justify-center p-4">
+
+  <!-- LOGIN CONTAINER -->
+  <div class="w-full max-w-md">
+    
+    <!-- BRANDING LOGO -->
+    <div class="text-center mb-8">
+      <div class="inline-flex w-16 h-16 bg-red-600 rounded-2xl items-center justify-center text-white text-3xl font-black shadow-xl shadow-red-200 mb-4 ring-8 ring-red-50">
+        <i class="fa-solid fa-shield-halved"></i>
+      </div>
+      <h1 class="text-2xl font-extrabold tracking-tight text-slate-900">SIM-INSPEKTORAT</h1>
+      <p class="text-xs font-semibold text-slate-500 mt-1">Sistem Informasi Manajemen Pembinaan & Pengawasan</p>
+      <p class="text-[11px] text-slate-400">Inspektorat Daerah Kabupaten Serang</p>
+    </div>
+
+    <!-- MAIN FORM CARD -->
+    <div class="bg-white p-8 rounded-3xl shadow-xl shadow-slate-200/60 border border-slate-100 space-y-6">
+      
+      <!-- STEP 1: FORM LOGIN NIP & PASSWORD -->
+      <div id="step-login">
+        <div class="mb-6">
+          <h2 class="text-sm font-bold text-slate-800 uppercase tracking-wider">Akses Masuk Sistem</h2>
+          <p class="text-xs text-slate-500 mt-1">Masukkan NIP dan Kata Sandi terdaftar Anda.</p>
+        </div>
+
+        <form id="login-form" onsubmit="handleInitialLogin(event)" class="space-y-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1.5">NIP (Nomor Induk Pegawai)</label>
+            <div class="relative">
+              <i class="fa-solid fa-id-card absolute left-3.5 top-3.5 text-slate-400 text-xs"></i>
+              <input type="text" id="nip" value="199512222026011001" required placeholder="Masukkan NIP Anda..."
+                class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-3 py-3 text-slate-800 placeholder-slate-400 focus:outline-none focus:border-red-500 focus:bg-white focus:ring-2 focus:ring-red-100 transition font-medium">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1.5">Kata Sandi</label>
+            <div class="relative">
+              <i class="fa-solid fa-lock absolute left-3.5 top-3.5 text-slate-400 text-xs"></i>
+              <!-- Input Password -->
+              <input type="password" id="password" value="admin123" required placeholder="••••••••"
+                class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-10 py-3 text-slate-800 placeholder-slate-400 focus:outline-none focus:border-red-500 focus:bg-white focus:ring-2 focus:ring-red-100 transition font-medium">
+              <!-- Tombol Lihat Password -->
+              <button type="button" onclick="togglePasswordVisibility()" class="absolute right-3.5 top-3.5 text-slate-400 hover:text-slate-600 focus:outline-none">
+                <i id="eye-icon" class="fa-solid fa-eye text-xs"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Tombol Masuk -->
+          <button type="submit" id="btn-submit" class="w-full bg-red-600 hover:bg-red-700 active:bg-red-800 text-white font-bold text-xs py-3.5 rounded-xl shadow-lg shadow-red-200 transition flex items-center justify-center gap-2 mt-2">
+            <span>Masuk</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </form>
+      </div>
+
+      <!-- STEP 2: 2-WAY VERIFICATION / ROLE NOTIFICATION -->
+      <div id="step-verify" class="hidden space-y-5 text-center py-2">
+        <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-xl font-bold mx-auto">
+          <i class="fa-solid fa-user-check"></i>
+        </div>
+        <div>
+          <span id="detected-jabatan-badge" class="text-[10px] font-extrabold uppercase px-2.5 py-1 bg-blue-50 text-blue-700 rounded-full border border-blue-200 tracking-wider">
+            DETEKSI OTOMATIS
+          </span>
+          <h3 id="detected-name" class="text-base font-extrabold text-slate-900 mt-2">Fadhilah Dwi Harso, S.ST</h3>
+          <p id="detected-role" class="text-xs text-slate-500 font-medium mt-0.5">Penanggung Jawab / Irban Khusus</p>
+        </div>
+
+        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 text-left space-y-1 text-xs">
+          <p class="font-bold text-slate-700">Akses Pengawasan Terverifikasi:</p>
+          <p class="text-slate-500 text-[11px] leading-relaxed">Sistem mendeteksi hak akses Anda sebagai pengawas internal. Lanjutkan untuk masuk ke portal kerja.</p>
+        </div>
+
+        <button onclick="confirmAndRedirect()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-3.5 rounded-xl shadow-lg shadow-emerald-100 transition flex items-center justify-center gap-2">
+          <i class="fa-solid fa-circle-check"></i>
+          <span>Konfirmasi & Masuk Portal</span>
+        </button>
+      </div>
+
+      <!-- ALERT ERROR BOX -->
+      <div id="alert-box" class="hidden p-3 rounded-xl text-xs bg-red-50 border border-red-200 text-red-600 font-medium"></div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <p class="text-center text-xs font-semibold text-slate-400 mt-8">
+      &copy; 2026 Inspektorat Daerah Kabupaten Serang
+    </p>
+
+  </div>
+
+  <script>
+    const API_BASE = '/api';
+    let authDataCache = null;
+
+    // Fitur Toggle Lihat Password
+    function togglePasswordVisibility() {
+      const passwordInput = document.getElementById('password');
+      const eyeIcon = document.getElementById('eye-icon');
+      
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        eyeIcon.classList.remove('fa-eye');
+        eyeIcon.classList.add('fa-eye-slash');
+      } else {
+        passwordInput.type = 'password';
+        eyeIcon.classList.remove('fa-eye-slash');
+        eyeIcon.classList.add('fa-eye');
+      }
+    }
+
+    // Process Login
+    async function handleInitialLogin(e) {
+      if (e) e.preventDefault();
+      
+      const alertBox = document.getElementById('alert-box');
+      alertBox.classList.add('hidden');
+
+      const nipVal = document.getElementById('nip').value;
+      const passVal = document.getElementById('password').value;
+
+      if (!nipVal || !passVal) {
+        alertBox.innerText = 'Mohon isi NIP dan Kata Sandi.';
+        alertBox.classList.remove('hidden');
+        return;
+      }
+
+      const payload = { nip: nipVal, password: passVal };
+
+      try {
+        const response = await fetch(`${API_BASE}/auth/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          authDataCache = result;
+          
+          // Pindah ke Notifikasi Konfirmasi Peran (Step 2)
+          document.getElementById('step-login').classList.add('hidden');
+          document.getElementById('step-verify').classList.remove('hidden');
+
+          document.getElementById('detected-name').innerText = result.user.nama;
+          document.getElementById('detected-role').innerText = result.user.jabatan + ' (' + result.user.role + ')';
+          document.getElementById('detected-jabatan-badge').innerText = result.user.role;
+
+        } else {
+          alertBox.innerText = result.message || 'NIP atau Password salah.';
+          alertBox.classList.remove('hidden');
+        }
+      } catch (err) {
+        alertBox.innerText = 'Gagal terhubung ke server. Pastikan node server.js aktif.';
+        alertBox.classList.remove('hidden');
+      }
+    }
+
+    function confirmAndRedirect() {
+      if (authDataCache) {
+        localStorage.setItem('sim_token', authDataCache.token);
+        localStorage.setItem('sim_user', JSON.stringify(authDataCache.user));
+        window.location.href = '/index.html';
+      }
+    }
+  </script>
+</body>
+</html>

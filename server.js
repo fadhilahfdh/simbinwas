@@ -29,12 +29,14 @@ pool.connect((err, client, release) => {
 });
 
 // Mount Routes Modul Pengawasan Core, Security, & TLHP
+const authRoutes = require('./routes/auth')(pool)
 const pkptRoutes = require('./routes/pkpt')(pool);
 const sptRoutes = require('./routes/spt')(pool);
 const kkpRoutes = require('./routes/kkp')(pool);
 const lhpRoutes = require('./routes/lhp')(pool);
 const tlhpRoutes = require('./routes/tlhp')(pool);
 
+app.use('/api/auth', authRoutes);
 app.use('/api/pkpt', pkptRoutes);
 app.use('/api/spt', sptRoutes);
 app.use('/api/kkp', kkpRoutes);
@@ -56,6 +58,7 @@ app.get('/api/health', async (req, res) => {
 
 app.listen(port, () => {
   console.log(`🚀 Server SIM-Inspektorat berjalan di: http://localhost:${port}`);
+  console.log(`   --> Login Access    : http://localhost:${port}/login.html`);
   console.log(`   --> Main Portal Hub : http://localhost:${port}/index.html`);
   console.log(`   --> UI PKPT Calendar: http://localhost:${port}/pkpt-calendar.html`);
   console.log(`   --> UI KKP Review   : http://localhost:${port}/kkp-review.html`);

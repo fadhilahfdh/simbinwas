@@ -6,57 +6,75 @@
   <title>Split-View KKP Review | SIM-Inspektorat Kabupaten Serang</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style> body { font-family: 'Plus Jakarta Sans', sans-serif; } </style>
 </head>
-<body class="bg-slate-100 font-sans text-slate-800 h-screen overflow-hidden">
+<body class="bg-slate-50 text-slate-800 h-screen overflow-hidden flex flex-col">
 
   <!-- TOP NAVIGATION HEADER -->
-  <header class="bg-slate-900 text-white h-14 px-4 flex items-center justify-between shadow-md border-b border-slate-700">
+  <header class="bg-white border-b border-slate-200/80 h-16 px-6 flex items-center justify-between z-30 shadow-sm flex-shrink-0">
     <div class="flex items-center space-x-3">
-      <span class="bg-red-600 text-xs font-bold px-2.5 py-1 rounded tracking-wide">KKP DIGITAL</span>
-      <h1 class="text-sm font-semibold tracking-wide">SPT No: 090/012/SPT-IRBAN.KHUSUS/2026 — Pemeriksaan Operasional Dinas Kesehatan</h1>
+      <a href="/index.html" class="w-9 h-9 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl flex items-center justify-center transition mr-1" title="Kembali ke Portal Utama">
+        <i class="fa-solid fa-arrow-left text-xs"></i>
+      </a>
+      <div class="w-10 h-10 bg-red-600 rounded-xl flex items-center justify-center font-black text-xl text-white shadow-md shadow-red-200">
+        <i class="fa-solid fa-file-signature"></i>
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="bg-red-100 text-red-700 text-[10px] font-extrabold px-2 py-0.5 rounded border border-red-200 uppercase">KKP DIGITAL</span>
+          <h1 class="text-xs font-bold text-slate-800">SPT No: 090/012/SPT-IRBAN.KHUSUS/2026</h1>
+        </div>
+        <p class="text-[11px] font-medium text-slate-500">Pemeriksaan Operasional Dinas Kesehatan Kab. Serang</p>
+      </div>
     </div>
-    <div class="flex items-center space-x-4 text-xs">
-      <span class="bg-amber-500/20 text-amber-300 border border-amber-500/40 px-2.5 py-1 rounded font-medium">
-        <i class="fa-solid fa-clock-rotate-left mr-1"></i> Status Review: REVIEW KETUA TIM
+
+    <div class="flex items-center space-x-4">
+      <span class="bg-amber-50 text-amber-700 border border-amber-200 px-3 py-1.5 rounded-xl font-bold text-xs flex items-center gap-1.5">
+        <i class="fa-solid fa-clock-rotate-left text-amber-500"></i> Review Ketua Tim
       </span>
-      <button onclick="updateReviewStatus('REVIEW_SUPERVISOR')" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-1.5 rounded font-medium transition flex items-center gap-1.5">
+      <button onclick="updateReviewStatus('REVIEW_SUPERVISOR')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs px-4 py-2.5 rounded-xl font-bold shadow-md shadow-emerald-100 transition flex items-center gap-1.5">
         <i class="fa-solid fa-paper-plane"></i> Ajukan ke Supervisor
       </button>
+      <div class="pl-3 border-l border-slate-200 hidden md:block">
+        <h4 id="user-display-name" class="text-xs font-bold text-slate-800">Fadhilah Dwi Harso, S.ST</h4>
+        <p id="user-display-role" class="text-[10px] font-semibold text-red-600">Ketua Tim Pemeriksa</p>
+      </div>
     </div>
   </header>
 
   <!-- 3-PANEL SPLIT-VIEW CONTAINER -->
-  <div class="grid grid-cols-12 h-[calc(100vh-3.5rem)] divide-x divide-slate-300">
+  <div class="grid grid-cols-12 h-[calc(100vh-4rem)] divide-x divide-slate-200 flex-1 overflow-hidden">
     
     <!-- PANEL 1: DAFTAR PKA & INDEKS KKP (COL-3) -->
     <section class="col-span-3 bg-white flex flex-col h-full overflow-hidden">
-      <div class="p-3 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
-        <h2 class="text-xs font-bold text-slate-700 uppercase tracking-wider">Program Kerja Audit (PKA)</h2>
-        <span class="text-[10px] bg-slate-200 text-slate-700 px-2 py-0.5 rounded font-bold">3 Prosedur</span>
+      <div class="p-4 bg-slate-50/80 border-b border-slate-200 flex justify-between items-center">
+        <h2 class="text-xs font-extrabold text-slate-800 uppercase tracking-wider">Program Kerja Audit (PKA)</h2>
+        <span class="text-[10px] bg-slate-200 text-slate-700 px-2.5 py-0.5 rounded-full font-bold">3 Prosedur</span>
       </div>
-      <div class="p-2 overflow-y-auto space-y-2 flex-1">
+      <div class="p-3 overflow-y-auto space-y-2.5 flex-1">
         
         <!-- PKA Item 1 -->
-        <div onclick="selectPka('PKA-01')" id="pka-item-PKA-01" class="p-3 border rounded-lg cursor-pointer transition border-blue-500 bg-blue-50/50 shadow-sm">
+        <div onclick="selectPka('PKA-01')" id="pka-item-PKA-01" class="p-3.5 border rounded-2xl cursor-pointer transition border-blue-500 bg-blue-50/40 shadow-sm">
           <div class="flex items-center justify-between mb-1">
             <span class="text-xs font-bold text-blue-700">PKA-01 (Pengadaan Obat)</span>
-            <span class="text-[10px] bg-emerald-100 text-emerald-800 font-semibold px-2 py-0.5 rounded">Selesai</span>
+            <span class="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-md">Selesai</span>
           </div>
-          <p class="text-xs text-slate-600 line-clamp-2">Pengujian kelengkapan dokumen berita acara serah terima barang farmasi.</p>
-          <div class="mt-2 flex justify-between text-[11px] text-slate-500">
+          <p class="text-xs text-slate-600 line-clamp-2 font-medium">Pengujian kelengkapan dokumen berita acara serah terima barang farmasi.</p>
+          <div class="mt-2.5 flex justify-between text-[11px] text-slate-500 font-medium">
             <span>Pelaksana: Anggota Tim 1</span>
             <i class="fa-solid fa-chevron-right text-slate-400"></i>
           </div>
         </div>
 
         <!-- PKA Item 2 -->
-        <div onclick="selectPka('PKA-02')" id="pka-item-PKA-02" class="p-3 border border-slate-200 rounded-lg cursor-pointer transition hover:bg-slate-50">
+        <div onclick="selectPka('PKA-02')" id="pka-item-PKA-02" class="p-3.5 border border-slate-200 rounded-2xl cursor-pointer transition hover:bg-slate-50">
           <div class="flex items-center justify-between mb-1">
             <span class="text-xs font-bold text-slate-800">PKA-02 (Uji Petik Fisik)</span>
-            <span class="text-[10px] bg-amber-100 text-amber-800 font-semibold px-2 py-0.5 rounded">Proses</span>
+            <span class="text-[10px] bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded-md">Proses</span>
           </div>
-          <p class="text-xs text-slate-600 line-clamp-2">Cek sampel fisik ketersediaan stok vaksin expired date di gudang Instalasi Farmasi.</p>
-          <div class="mt-2 flex justify-between text-[11px] text-slate-500">
+          <p class="text-xs text-slate-600 line-clamp-2 font-medium">Cek sampel fisik ketersediaan stok vaksin expired date di gudang Instalasi Farmasi.</p>
+          <div class="mt-2.5 flex justify-between text-[11px] text-slate-500 font-medium">
             <span>Pelaksana: Anggota Tim 2</span>
             <i class="fa-solid fa-chevron-right text-slate-400"></i>
           </div>
@@ -67,29 +85,29 @@
 
     <!-- PANEL 2: DETAIL KERTAS KERJA & BUKTI FISIK (COL-5) -->
     <section class="col-span-5 bg-slate-50 flex flex-col h-full overflow-hidden">
-      <div class="p-3 bg-white border-b border-slate-200 flex justify-between items-center">
-        <h2 class="text-xs font-bold text-slate-700 uppercase tracking-wider">Hasil Pengujian & Lampiran Bukti</h2>
-        <span class="text-xs font-mono text-slate-500">ID: KKP-PKA-01</span>
+      <div class="p-4 bg-white border-b border-slate-200 flex justify-between items-center">
+        <h2 class="text-xs font-extrabold text-slate-800 uppercase tracking-wider">Hasil Pengujian & Lampiran Bukti</h2>
+        <span class="text-xs font-mono font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded">ID: KKP-PKA-01</span>
       </div>
       <div class="p-4 overflow-y-auto space-y-4 flex-1">
         
         <!-- Uraian Prosedur & Hasil Pengujian -->
-        <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm space-y-3">
-          <h3 class="text-xs font-bold text-slate-500 uppercase">Uraian Hasil Pengujian Lapangan</h3>
-          <p class="text-xs text-slate-700 leading-relaxed bg-slate-50 p-3 rounded border border-slate-100">
+        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm space-y-3">
+          <h3 class="text-xs font-extrabold text-slate-500 uppercase tracking-wider">Uraian Hasil Pengujian Lapangan</h3>
+          <p class="text-xs text-slate-700 leading-relaxed bg-slate-50/80 p-3.5 rounded-xl border border-slate-200/60 font-medium">
             Telah dilakukan uji petik terhadap 15 BAST Beli Obat Periode Triwulan II. Ditemukan keterlambatan penyerahan barang selama 14 hari kerja pada Paket Obat Generik PT. X tanpa pengenaan denda keterlambatan.
           </p>
         </div>
 
         <!-- Lampiran Bukti Foto / PDF -->
-        <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm space-y-2">
-          <h3 class="text-xs font-bold text-slate-500 uppercase">Lampiran Digital (KKP-Proof)</h3>
-          <div class="flex items-center justify-between p-2.5 bg-slate-50 rounded border border-slate-200 text-xs">
-            <div class="flex items-center space-x-2">
-              <i class="fa-solid fa-file-pdf text-red-500 text-base"></i>
-              <span class="font-medium text-slate-700">BAST_Pengadaan_Obat_Signed.pdf</span>
+        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm space-y-3">
+          <h3 class="text-xs font-extrabold text-slate-500 uppercase tracking-wider">Lampiran Digital (KKP-Proof)</h3>
+          <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-200/80 text-xs">
+            <div class="flex items-center space-x-2.5">
+              <i class="fa-solid fa-file-pdf text-red-500 text-lg"></i>
+              <span class="font-bold text-slate-700">BAST_Pengadaan_Obat_Signed.pdf</span>
             </div>
-            <button class="text-blue-600 hover:text-blue-800 font-semibold text-[11px]">Preview</button>
+            <button class="text-blue-600 hover:text-blue-800 font-bold text-[11px] bg-blue-50 px-2.5 py-1 rounded">Preview</button>
           </div>
         </div>
 
@@ -98,43 +116,43 @@
 
     <!-- PANEL 3: NOTISI TEMUAN AUDIT 5 UNSUR (COL-4) -->
     <section class="col-span-4 bg-white flex flex-col h-full overflow-hidden">
-      <div class="p-3 bg-red-50 border-b border-red-100 flex justify-between items-center">
-        <h2 class="text-xs font-bold text-red-800 uppercase tracking-wider flex items-center gap-1.5">
+      <div class="p-4 bg-red-50/80 border-b border-red-100 flex justify-between items-center">
+        <h2 class="text-xs font-extrabold text-red-800 uppercase tracking-wider flex items-center gap-1.5">
           <i class="fa-solid fa-triangle-exclamation"></i> Form Notisi Temuan 5 Unsur
         </h2>
       </div>
       <div class="p-4 overflow-y-auto space-y-3 flex-1">
         
         <div>
-          <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1">1. Kondisi</label>
-          <textarea id="kondisi" rows="2" class="w-full text-xs p-2 border border-slate-300 rounded focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="Fakta yang ditemukan di lapangan..."></textarea>
+          <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">1. Kondisi</label>
+          <textarea id="kondisi" rows="2" class="w-full text-xs p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-red-100 focus:border-red-500 focus:bg-white focus:outline-none font-medium" placeholder="Fakta yang ditemukan di lapangan..."></textarea>
         </div>
 
         <div>
-          <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1">2. Kriteria</label>
-          <textarea id="kriteria" rows="2" class="w-full text-xs p-2 border border-slate-300 rounded focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="Aturan / Perpres / Permendagri yang dilanggar..."></textarea>
+          <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">2. Kriteria</label>
+          <textarea id="kriteria" rows="2" class="w-full text-xs p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-red-100 focus:border-red-500 focus:bg-white focus:outline-none font-medium" placeholder="Aturan / Perpres / Permendagri yang dilanggar..."></textarea>
         </div>
 
         <div class="grid grid-cols-2 gap-2">
           <div>
-            <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1">3. Sebab</label>
-            <textarea id="sebab" rows="2" class="w-full text-xs p-2 border border-slate-300 rounded focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="Penyebab terjadinya..."></textarea>
+            <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">3. Sebab</label>
+            <textarea id="sebab" rows="2" class="w-full text-xs p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-red-100 focus:border-red-500 focus:bg-white focus:outline-none font-medium" placeholder="Penyebab terjadinya..."></textarea>
           </div>
           <div>
-            <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1">4. Akibat</label>
-            <textarea id="akibat" rows="2" class="w-full text-xs p-2 border border-slate-300 rounded focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="Dampak / potensi kerugian..."></textarea>
+            <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">4. Akibat</label>
+            <textarea id="akibat" rows="2" class="w-full text-xs p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-red-100 focus:border-red-500 focus:bg-white focus:outline-none font-medium" placeholder="Dampak / potensi kerugian..."></textarea>
           </div>
         </div>
 
         <div>
-          <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1">5. Rekomendasi & Nilai (Rp)</label>
+          <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">5. Rekomendasi & Nilai (Rp)</label>
           <div class="space-y-2">
-            <input type="text" id="uraian_rekomendasi" class="w-full text-xs p-2 border border-slate-300 rounded focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="Uraian Rekomendasi APIP...">
-            <input type="number" id="nilai_rekomendasi_rp" class="w-full text-xs p-2 border border-slate-300 rounded focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="Nilai Rekomendasi / Kerugian (Rp)...">
+            <input type="text" id="uraian_rekomendasi" class="w-full text-xs p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-red-100 focus:border-red-500 focus:bg-white focus:outline-none font-medium" placeholder="Uraian Rekomendasi APIP...">
+            <input type="number" id="nilai_rekomendasi_rp" class="w-full text-xs p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-red-100 focus:border-red-500 focus:bg-white focus:outline-none font-medium" placeholder="Nilai Rekomendasi / Kerugian (Rp)...">
           </div>
         </div>
 
-        <button onclick="simpanNotisiTemuan()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold text-xs py-2.5 rounded shadow transition flex items-center justify-center gap-1.5 mt-2">
+        <button onclick="simpanNotisiTemuan()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold text-xs py-3 rounded-xl shadow-lg shadow-red-100 transition flex items-center justify-center gap-1.5 mt-2">
           <i class="fa-solid fa-floppy-disk"></i> Simpan Notisi Temuan
         </button>
 
@@ -143,14 +161,20 @@
 
   </div>
 
-  <!-- SCRIPT INTEGRASI DENGAN BACKEND REST API -->
+  <!-- SCRIPT INTEGRASI REST API -->
   <script>
-    const API_BASE = 'http://localhost:5000/api';
+    const API_BASE = '/api';
+
+    // Guard Authentication
+    const token = localStorage.getItem('sim_token');
+    const user = JSON.parse(localStorage.getItem('sim_user') || '{}');
+    if (!token) window.location.href = '/login.html';
+    if (user.nama) document.getElementById('user-display-name').innerText = user.nama;
+    if (user.jabatan) document.getElementById('user-display-role').innerText = user.jabatan;
 
     async function simpanNotisiTemuan() {
-      const kkp_header_id = "PASTE_KKP_ID_HERE"; // ID KKP dari Database
       const payload = {
-        kkp_header_id: kkp_header_id,
+        kkp_header_id: "00000000-0000-0000-0000-000000000000",
         kondisi: document.getElementById('kondisi').value,
         kriteria: document.getElementById('kriteria').value,
         sebab: document.getElementById('sebab').value,
@@ -187,7 +211,7 @@
         const response = await fetch(`${API_BASE}/kkp/review-status`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ kkp_header_id: "PASTE_KKP_ID_HERE", target_status: targetStatus })
+          body: JSON.stringify({ kkp_header_id: "00000000-0000-0000-0000-000000000000", target_status: targetStatus })
         });
         const result = await response.json();
         if(result.success) {
