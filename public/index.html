@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal Utama | SIM-Inspektorat Kabupaten Serang</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-100 font-sans text-slate-800 min-h-screen flex flex-col">
+
+  <!-- TOP HEADER NAV -->
+  <header class="bg-slate-900 text-white h-16 px-6 flex items-center justify-between shadow-lg">
+    <div class="flex items-center space-x-3">
+      <div class="w-9 h-9 bg-red-600 rounded-lg flex items-center justify-center font-black text-xl shadow">
+        <i class="fa-solid fa-shield-halved"></i>
+      </div>
+      <div>
+        <h1 class="text-base font-bold tracking-wide leading-tight">SIM-INSPEKTORAT</h1>
+        <p class="text-[11px] text-slate-400">Sistem Informasi Manajemen Pembinaan & Pengawasan — Kab. Serang</p>
+      </div>
+    </div>
+    <div class="flex items-center space-x-4 text-xs">
+      <span class="bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 px-3 py-1 rounded-full flex items-center gap-1.5">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Server Online
+      </span>
+      <span class="text-slate-300 font-medium">Irban Khusus / Wilayah V</span>
+    </div>
+  </header>
+
+  <!-- MAIN DASHBOARD CONTENT -->
+  <main class="max-w-7xl mx-auto p-6 flex-1 space-y-6 w-full">
+
+    <!-- WELCOME BANNER -->
+    <div class="bg-gradient-to-r from-slate-900 via-slate-800 to-red-950 text-white p-6 rounded-2xl shadow-md flex flex-col md:flex-row justify-between items-center gap-4">
+      <div>
+        <h2 class="text-xl font-bold">Selamat Datang di Portal Pengawasan Digital</h2>
+        <p class="text-xs text-slate-300 mt-1 max-w-2xl">
+          Sistem manajemen terintegrasi untuk Perencanaan PKPT berbasis Risiko, Penerbitan SPT, Kertas Kerja Pemeriksaan (KKP) Digital, Keamanan LHP, hingga Pemantauan Tindak Lanjut (TLHP).
+        </p>
+      </div>
+      <a href="/pkpt-calendar.html" class="bg-red-600 hover:bg-red-500 text-white text-xs font-bold px-4 py-2.5 rounded-lg transition shadow-lg flex items-center gap-2 whitespace-nowrap">
+        <i class="fa-solid fa-calendar-plus"></i> Kelola PKPT & Jadwal
+      </a>
+    </div>
+
+    <!-- MODULE NAVIGATION GRID -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+      <!-- MODUL 1: PKPT & PENJADWALAN -->
+      <a href="/pkpt-calendar.html" class="group bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition hover:border-blue-500 flex flex-col justify-between">
+        <div>
+          <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center text-xl font-bold mb-4 group-hover:bg-blue-600 group-hover:text-white transition">
+            <i class="fa-regular fa-calendar-check"></i>
+          </div>
+          <h3 class="text-base font-bold text-slate-800 group-hover:text-blue-600 transition">1. Perencanaan PKPT & Penjadwalan</h3>
+          <p class="text-xs text-slate-500 mt-2 leading-relaxed">
+            Penyusunan program kerja tahunan, penataan alokasi Hari Pemeriksaan (HP), serta fitur Anti-Collision untuk pencegahan bentrok jadwal auditor.
+          </p>
+        </div>
+        <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-blue-600">
+          <span>Buka Kalender & Form</span>
+          <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
+        </div>
+      </a>
+
+      <!-- MODUL 2: KKP DIGITAL & REVIEW -->
+      <a href="/kkp-review.html" class="group bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition hover:border-red-500 flex flex-col justify-between">
+        <div>
+          <div class="w-12 h-12 bg-red-50 text-red-600 rounded-xl flex items-center justify-center text-xl font-bold mb-4 group-hover:bg-red-600 group-hover:text-white transition">
+            <i class="fa-solid fa-file-signature"></i>
+          </div>
+          <h3 class="text-base font-bold text-slate-800 group-hover:text-red-600 transition">2. KKP Digital & Review Berjenjang</h3>
+          <p class="text-xs text-slate-500 mt-2 leading-relaxed">
+            Antarmuka 3-Panel Split-View untuk pengujian prosedur PKA, perekaman Notisi Temuan 5 Unsur, serta persetujuan Ketua Tim & Supervisor.
+          </p>
+        </div>
+        <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-red-600">
+          <span>Buka Workspace KKP</span>
+          <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
+        </div>
+      </a>
+
+      <!-- MODUL 3: EXECUTIVE CONTROL CENTER & TLHP -->
+      <a href="/tlhp-dashboard.html" class="group bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition hover:border-emerald-500 flex flex-col justify-between">
+        <div>
+          <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center text-xl font-bold mb-4 group-hover:bg-emerald-600 group-hover:text-white transition">
+            <i class="fa-solid fa-chart-line"></i>
+          </div>
+          <h3 class="text-base font-bold text-slate-800 group-hover:text-emerald-600 transition">3. Dashboard Executive & TLHP</h3>
+          <p class="text-xs text-slate-500 mt-2 leading-relaxed">
+            Matriks kepatuhan penyelesaian rekomendasi (S/BS/BD/TDT), pemantauan pengembalian kerugian daerah, dan rekapitulasi per wilayah Irban.
+          </p>
+        </div>
+        <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-emerald-600">
+          <span>Lihat Matriks & Grafik</span>
+          <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
+        </div>
+      </a>
+
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-white border-t border-slate-200 py-4 px-6 text-center text-xs text-slate-500">
+    SIM-Inspektorat Kabupaten Serang &copy; 2026 — Inspektorat Daerah Kabupaten Serang
+  </footer>
+
+</body>
+</html>
