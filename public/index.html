@@ -3,133 +3,341 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portal Utama | SIM-Inspektorat Kabupaten Serang</title>
+  <title>Dashboard Utama | SIMBINWAS Inspektorat Kabupaten Serang</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <style> body { font-family: 'Plus Jakarta Sans', sans-serif; } </style>
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+    }
+  </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+<body class="bg-slate-100 text-slate-800 min-h-screen flex relative overflow-x-hidden">
 
-  <!-- TOP HEADER NAV -->
-  <header class="bg-white border-b border-slate-200/80 h-16 px-6 flex items-center justify-between sticky top-0 z-30 shadow-sm">
-    <div class="flex items-center space-x-3">
-      <div class="w-10 h-10 bg-red-600 rounded-xl flex items-center justify-center font-black text-xl text-white shadow-md shadow-red-200">
-        <i class="fa-solid fa-shield-halved"></i>
+  <!-- FLOATING TOGGLE BUTTON (HANYA MUNCUL SAAT SIDEBAR DISEMBUNYIKAN) -->
+  <button id="floating-toggle-btn" onclick="toggleSidebar()" class="fixed top-5 left-5 z-40 bg-slate-900 text-white w-10 h-10 rounded-2xl shadow-xl flex items-center justify-center hover:bg-slate-800 transition transform hover:scale-105 hidden" title="Buka Panel Navigasi">
+    <i class="fa-solid fa-bars text-sm"></i>
+  </button>
+
+  <!-- FLOATING SIDEBAR PANEL -->
+  <aside id="main-sidebar" class="w-64 bg-slate-900/95 backdrop-blur-md text-slate-300 flex flex-col justify-between p-4 min-h-[calc(100vh-2.5rem)] my-5 ml-5 rounded-3xl shadow-2xl shadow-slate-900/30 fixed top-0 left-0 z-50 transition-all duration-300 overflow-hidden">
+    <div>
+      <!-- BRANDING LOGO -->
+      <div class="flex items-center justify-between px-2 py-3 border-b border-slate-800/80 mb-6">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-white/90 rounded-xl flex items-center justify-center p-1 shadow-md">
+            <img src="/logo-serang.png" alt="Logo Kabupaten Serang" class="w-full h-full object-contain">
+          </div>
+          <div>
+            <h1 class="text-base font-black text-white leading-tight">SIMBINWAS</h1>
+            <p class="text-[10px] text-emerald-400 font-bold">Kabupaten Serang</p>
+          </div>
+        </div>
+        <button onclick="toggleSidebar()" class="text-slate-400 hover:text-white p-1 text-xs" title="Sembunyikan Sidebar">
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
       </div>
-      <div>
-        <h1 class="text-sm font-extrabold tracking-tight text-slate-900 leading-tight">SIM-INSPEKTORAT</h1>
-        <p class="text-[11px] font-semibold text-slate-400">Kabupaten Serang</p>
-      </div>
+
+      <!-- NAVIGATION MENU PANEL KIRI -->
+      <nav class="space-y-1.5 text-xs font-semibold">
+        <p class="px-3 text-[10px] uppercase font-bold text-slate-500 tracking-wider mb-2">Menu Utama</p>
+        <a href="/index.html" class="flex items-center gap-3 px-3 py-2.5 bg-emerald-600 text-white rounded-xl font-bold shadow-lg shadow-emerald-900/30">
+          <i class="fa-solid fa-chart-pie w-4 text-center"></i>
+          <span>Dashboard Executive</span>
+        </a>
+
+        <p class="px-3 text-[10px] uppercase font-bold text-slate-500 tracking-wider mt-6 mb-2">Input & Kontrol</p>
+        <a href="/pkpt-calendar.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800/80 hover:text-white rounded-xl transition">
+          <i class="fa-solid fa-calendar-check w-4 text-center text-amber-400"></i>
+          <span>Input & Jadwal PKPT</span>
+        </a>
+        <a href="/usulan-st.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800/80 hover:text-white rounded-xl transition">
+  <i class="fa-solid fa-file-signature w-4 text-center text-blue-400"></i>
+  <span>Usulan Penugasan / ST</span>
+</a>
+        <a href="/kkp-review.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800/80 hover:text-white rounded-xl transition">
+          <i class="fa-solid fa-shield-halved w-4 text-center text-emerald-400"></i>
+          <span>Kontrol Pengawasan Berjenjang</span>
+        </a>
+
+        <p class="px-3 text-[10px] uppercase font-bold text-slate-500 tracking-wider mt-6 mb-2">Laporan & TLHP</p>
+        <a href="/tlhp-dashboard.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800/80 hover:text-white rounded-xl transition">
+          <i class="fa-solid fa-clock-rotate-left w-4 text-center text-red-400"></i>
+          <span>Pemantauan TLHP</span>
+        </a>
+      </nav>
     </div>
 
-    <!-- LOGGED IN USER PROFILE DISPLAY -->
-    <div class="flex items-center space-x-4">
-      <div class="text-right hidden sm:block">
-        <h4 id="user-display-name" class="text-xs font-bold text-slate-800">Fadhilah Dwi Harso, S.ST</h4>
-        <p id="user-display-role" class="text-[10px] font-semibold text-red-600">Pengawas Pemerintahan / Auditor</p>
+    <!-- USER LOGOUT INFO & COLLAPSE TRIGGER -->
+    <div class="pt-4 border-t border-slate-800/80 space-y-3">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2 overflow-hidden">
+          <div class="w-8 h-8 bg-emerald-600/20 text-emerald-400 rounded-lg flex items-center justify-center font-bold text-xs border border-emerald-500/30">
+            <i class="fa-solid fa-user-shield"></i>
+          </div>
+          <div class="truncate">
+            <p id="nav-user-name" class="text-xs font-bold text-white truncate">Fadhilah Dwi Harso, S.ST</p>
+            <p id="nav-user-role" class="text-[10px] text-slate-400 truncate">Irban Khusus</p>
+          </div>
+        </div>
+        <button onclick="handleLogout()" class="text-slate-400 hover:text-red-400 p-1.5 transition" title="Keluar Sistem">
+          <i class="fa-solid fa-right-from-bracket text-xs"></i>
+        </button>
       </div>
-      <button onclick="handleLogout()" class="bg-slate-100 hover:bg-red-50 hover:text-red-600 text-slate-600 text-xs p-2.5 rounded-xl border border-slate-200 transition" title="Keluar">
-        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+
+      <button onclick="toggleSidebar()" class="w-full py-2 bg-slate-800/80 hover:bg-slate-800 text-slate-400 hover:text-white rounded-xl text-[11px] font-bold transition flex items-center justify-center gap-2">
+        <i class="fa-solid fa-angles-left"></i> Sembunyikan Panel
       </button>
     </div>
-  </header>
+  </aside>
 
-  <!-- MAIN CONTAINER -->
-  <main class="max-w-7xl mx-auto p-6 flex-1 space-y-6 w-full">
-
-    <!-- HERO BANNER -->
-    <div class="bg-gradient-to-r from-slate-900 via-slate-800 to-red-950 text-white p-8 rounded-3xl shadow-xl shadow-slate-200 flex flex-col md:flex-row justify-between items-center gap-6 relative overflow-hidden">
-      <div class="z-10">
-        <span class="bg-red-500/20 text-red-300 border border-red-500/30 text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">
-          PORTAL PENGAWASAN BERSATU
-        </span>
-        <h2 class="text-2xl font-extrabold mt-3">Sistem Informasi Manajemen Inspektorat</h2>
-        <p class="text-xs text-slate-300 mt-2 max-w-2xl leading-relaxed">
-          Penyelenggaraan pengawasan internal pemerintah daerah terintegrasi: Perencanaan PKPT berbasis Risiko, Penerbitan SPT, KKP Digital, Keamanan LHP, hingga Pemantauan Tindak Lanjut.
-        </p>
+  <!-- MAIN CONTENT AREA -->
+  <main id="main-content" class="flex-1 p-8 ml-72 transition-all duration-300 space-y-8 overflow-y-auto min-h-screen">
+    
+    <!-- TOP BAR HEADER -->
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl font-black text-slate-900">Dashboard Utama Pengawasan</h1>
+        <p class="text-xs font-semibold text-slate-500">Ringkasan Eksekutif & Pemantauan Real-Time Inspektorat Daerah Kabupaten Serang</p>
       </div>
-      <a href="/pkpt-calendar.html" class="z-10 bg-red-600 hover:bg-red-500 text-white text-xs font-bold px-5 py-3.5 rounded-xl transition shadow-lg shadow-red-950/50 flex items-center gap-2 whitespace-nowrap">
-        <i class="fa-solid fa-calendar-plus"></i>
-        <span>Kelola PKPT & Jadwal</span>
+      <div class="flex items-center gap-3">
+        <span id="header-role-badge" class="px-3 py-2 bg-slate-900 text-slate-200 font-extrabold text-xs rounded-xl flex items-center gap-1.5">
+          <i class="fa-solid fa-id-badge"></i> Akses: IRBAN KHUSUS
+        </span>
+        <span class="text-xs font-bold text-slate-400">TA 2026</span>
+      </div>
+    </div>
+
+    <!-- EARLY WARNING SYSTEM: ALERT JATUH TEMPO > 60 HARI -->
+    <div class="bg-red-500 text-white p-4 rounded-2xl shadow-lg shadow-red-200 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center text-lg font-bold">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+        <div>
+          <h4 class="text-xs font-extrabold uppercase tracking-wider">Peringatan EWS Tindak Lanjut (> 60 Hari Melebihi Batas)</h4>
+          <p class="text-xs opacity-90 mt-0.5">Terdapat <b>3 LHP Temuan</b> yang telah melebihi batas waktu 60 hari. Notifikasi otomatis aktif untuk Pengendali Teknis & Ketua Tim penanggung jawab.</p>
+        </div>
+      </div>
+      <a href="/tlhp-dashboard.html" class="px-3.5 py-2 bg-white text-red-600 rounded-xl text-xs font-bold shadow hover:bg-slate-100 transition whitespace-nowrap">
+        Lihat Detail TLHP <i class="fa-solid fa-arrow-right ml-1"></i>
       </a>
     </div>
 
-    <!-- MODULE NAVIGATION GRID -->
+    <!-- CAPAIAN PKPT & METRICS SUMMARY -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      
+      <!-- CAPAIAN PKPT CARD -->
+      <div class="glass-card p-6 rounded-3xl border border-slate-200/80 shadow-sm space-y-4">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-extrabold text-slate-400 uppercase tracking-wider">Capaian PKPT 2026</span>
+          <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">On Target</span>
+        </div>
+        <div class="flex items-baseline justify-between">
+          <h2 class="text-4xl font-black text-slate-900">78.5%</h2>
+          <span class="text-xs font-semibold text-slate-500">42 / 54 Obrik</span>
+        </div>
+        <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden border border-slate-200">
+          <div class="bg-emerald-500 h-full w-[78.5%] rounded-full"></div>
+        </div>
+        <button onclick="togglePkptModal()" class="w-full text-center text-xs font-bold text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100 py-2.5 rounded-xl border border-emerald-200 transition">
+          Buka Rekap PKPT Per-Irban & Bulan <i class="fa-solid fa-chevron-right text-[10px] ml-1"></i>
+        </button>
+      </div>
 
-      <!-- MODUL 1: PKPT & CALENDAR -->
-      <a href="/pkpt-calendar.html" class="group bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:border-blue-500 transition duration-300 flex flex-col justify-between">
+      <!-- PENUGASAN BERJALAN METRIC -->
+      <div class="glass-card p-6 rounded-3xl border border-slate-200/80 shadow-sm space-y-4">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-extrabold text-slate-400 uppercase tracking-wider">Penugasan Aktif</span>
+          <span class="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md border border-blue-200">Running</span>
+        </div>
+        <div class="flex items-baseline justify-between">
+          <h2 class="text-4xl font-black text-slate-900">8 <span class="text-lg font-bold text-slate-400">Surat Tugas</span></h2>
+          <span class="text-xs font-semibold text-slate-500">32 Personel APIP</span>
+        </div>
+        <p class="text-xs text-slate-500 leading-relaxed">Tim pengawas sedang melaksanakan pengawasan lapangan sesuai jadwal SPT.</p>
+      </div>
+
+      <!-- TINDAK LANJUT METRIC -->
+      <div class="glass-card p-6 rounded-3xl border border-slate-200/80 shadow-sm space-y-4">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-extrabold text-slate-400 uppercase tracking-wider">Status Tindak Lanjut</span>
+          <span class="text-xs font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded-md border border-red-200">3 Overdue</span>
+        </div>
+        <div class="flex items-baseline justify-between">
+          <h2 class="text-4xl font-black text-slate-900">82.1%</h2>
+          <span class="text-xs font-semibold text-slate-500">Selesai Ditindaklanjuti</span>
+        </div>
+        <div class="flex items-center justify-between text-xs font-semibold pt-1">
+          <span class="text-slate-500">Total Rekomendasi: <b>142</b></span>
+          <span class="text-red-600">Melebihi 60 Hari: <b>3</b></span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- PENUGASAN REAL-TIME DENGAN FITUR LIHAT ST -->
+    <div class="glass-card p-6 rounded-3xl border border-slate-200/80 shadow-sm space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-4">
         <div>
-          <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-xl font-bold mb-4 group-hover:bg-blue-600 group-hover:text-white transition duration-300">
-            <i class="fa-regular fa-calendar-check"></i>
-          </div>
-          <h3 class="text-base font-bold text-slate-900 group-hover:text-blue-600 transition">1. Perencanaan PKPT & Jadwal</h3>
-          <p class="text-xs text-slate-500 mt-2 leading-relaxed">
-            Penyusunan program kerja tahunan, alokasi Hari Pemeriksaan (HP), serta visualisasi Kalender Interaktif Anti-Bentrok Tim.
-          </p>
+          <h3 class="text-base font-extrabold text-slate-900">Penugasan Pengawasan Sedang Berjalan</h3>
+          <p class="text-xs text-slate-500">Detail Surat Tugas (ST) aktif dan susunan tim pengawas di lapangan.</p>
         </div>
-        <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-blue-600">
-          <span>Buka Kalender & Form</span>
-          <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
-        </div>
-      </a>
+        <span class="text-xs font-bold bg-slate-100 text-slate-600 px-3 py-1 rounded-full border border-slate-200">8 Surat Tugas Aktif</span>
+      </div>
 
-      <!-- MODUL 2: KKP REVIEW -->
-      <a href="/kkp-review.html" class="group bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:border-red-500 transition duration-300 flex flex-col justify-between">
-        <div>
-          <div class="w-12 h-12 bg-red-50 text-red-600 rounded-2xl flex items-center justify-center text-xl font-bold mb-4 group-hover:bg-red-600 group-hover:text-white transition duration-300">
-            <i class="fa-solid fa-file-signature"></i>
-          </div>
-          <h3 class="text-base font-bold text-slate-900 group-hover:text-red-600 transition">2. KKP Digital & Review</h3>
-          <p class="text-xs text-slate-500 mt-2 leading-relaxed">
-            Antarmuka 3-Panel Split-View untuk pengujian prosedur PKA, pencatatan Notisi Temuan 5 Unsur, serta persetujuan berjenjang.
-          </p>
-        </div>
-        <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-red-600">
-          <span>Buka KKP Workspace</span>
-          <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
-        </div>
-      </a>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs border-collapse">
+          <thead>
+            <tr class="bg-slate-50/80 text-slate-500 font-extrabold uppercase border-b border-slate-200">
+              <th class="p-3">Nama Penugasan / Obrik</th>
+              <th class="p-3">Nomor Surat Tugas</th>
+              <th class="p-3">Waktu Penugasan</th>
+              <th class="p-3">Susunan Tim APIP</th>
+              <th class="p-3 text-center">Aksi Surat Tugas</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 font-medium text-slate-700">
+            <!-- ROW 1 -->
+            <tr class="hover:bg-slate-50/80 transition">
+              <td class="p-3">
+                <p class="font-bold text-slate-900">Audit Kinerja Pengelolaan Dana BOS</p>
+                <p class="text-[11px] text-slate-400">Dinas Pendidikan & Kebudayaan</p>
+              </td>
+              <td class="p-3 font-mono text-slate-600 font-bold">ST/094/012/IRBAN-I/2026</td>
+              <td class="p-3">
+                <span class="bg-slate-100 px-2 py-0.5 rounded text-[11px] font-semibold">15 Sep - 05 Okt 2026</span>
+              </td>
+              <td class="p-3 text-[11px] space-y-0.5">
+                <p><b>PT:</b> H. Ahmad Bahrudin, SE</p>
+                <p><b>KT:</b> Hendra Wijaya, S.ST</p>
+                <p class="text-slate-400"><b>Anggota:</b> 3 Orang</p>
+              </td>
+              <td class="p-3 text-center">
+                <button onclick="viewSuratTugas('ST/094/012/IRBAN-I/2026')" class="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-bold text-[11px] shadow transition inline-flex items-center gap-1.5">
+                  <i class="fa-solid fa-file-pdf"></i> Lihat / Cetak ST
+                </button>
+              </td>
+            </tr>
 
-      <!-- MODUL 3: TLHP CONTROL CENTER -->
-      <a href="/tlhp-dashboard.html" class="group bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:border-emerald-500 transition duration-300 flex flex-col justify-between">
-        <div>
-          <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center text-xl font-bold mb-4 group-hover:bg-emerald-600 group-hover:text-white transition duration-300">
-            <i class="fa-solid fa-chart-line"></i>
-          </div>
-          <h3 class="text-base font-bold text-slate-900 group-hover:text-emerald-600 transition">3. Dashboard Executive TLHP</h3>
-          <p class="text-xs text-slate-500 mt-2 leading-relaxed">
-            Matriks kepatuhan penyelesaian rekomendasi (S/BS/BD/TDT), pemantauan pengembalian kerugian daerah per wilayah Irban.
-          </p>
-        </div>
-        <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-emerald-600">
-          <span>Lihat Matriks & Grafik</span>
-          <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
-        </div>
-      </a>
-
+            <!-- ROW 2 -->
+            <tr class="hover:bg-slate-50/80 transition">
+              <td class="p-3">
+                <p class="font-bold text-slate-900">Audit Khusus Pengadaan Barang & Jasa</p>
+                <p class="text-[11px] text-slate-400">RSUD Kabupaten Serang</p>
+              </td>
+              <td class="p-3 font-mono text-slate-600 font-bold">ST/700/088/IRSUS/2026</td>
+              <td class="p-3">
+                <span class="bg-slate-100 px-2 py-0.5 rounded text-[11px] font-semibold">20 Sep - 10 Okt 2026</span>
+              </td>
+              <td class="p-3 text-[11px] space-y-0.5">
+                <p><b>PT:</b> Fadhilah Dwi Harso, S.ST</p>
+                <p><b>KT:</b> Rahmat Hidayat, M.Si</p>
+                <p class="text-slate-400"><b>Anggota:</b> 4 Orang</p>
+              </td>
+              <td class="p-3 text-center">
+                <button onclick="viewSuratTugas('ST/700/088/IRSUS/2026')" class="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-bold text-[11px] shadow transition inline-flex items-center gap-1.5">
+                  <i class="fa-solid fa-file-pdf"></i> Lihat / Cetak ST
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
   </main>
 
-  <!-- SCRIPT AUTH GUARD -->
-  <script>
-    // Cek Guard Authentication
-    const token = localStorage.getItem('sim_token');
-    const user = JSON.parse(localStorage.getItem('sim_user') || '{}');
+  <!-- MODAL REKAP PKPT PER-IRBAN & BULAN -->
+  <div id="pkpt-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <div class="bg-white w-full max-w-3xl rounded-3xl p-6 shadow-2xl space-y-6">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <h3 class="text-base font-extrabold text-slate-900">Rekapitulasi PKPT Per-Irban & Per-Bulan TA 2026</h3>
+        <button onclick="togglePkptModal()" class="text-slate-400 hover:text-slate-600 text-lg font-bold">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
 
-    if (!token) {
-      window.location.href = '/login.html';
-    } else {
-      if(user.nama) document.getElementById('user-display-name').innerText = user.nama;
-      if(user.jabatan) document.getElementById('user-display-role').innerText = user.jabatan;
+      <div class="space-y-2">
+        <p class="text-xs font-bold text-slate-700 uppercase tracking-wider">Capaian Per-Irban / Wilayah</p>
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-3 text-xs text-center font-bold">
+          <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200">
+            <p class="text-slate-400 text-[10px]">IRBAN I</p>
+            <p class="text-lg text-slate-800">10 / 12</p>
+            <span class="text-[10px] text-emerald-600">83%</span>
+          </div>
+          <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200">
+            <p class="text-slate-400 text-[10px]">IRBAN II</p>
+            <p class="text-lg text-slate-800">8 / 10</p>
+            <span class="text-[10px] text-emerald-600">80%</span>
+          </div>
+          <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200">
+            <p class="text-slate-400 text-[10px]">IRBAN III</p>
+            <p class="text-lg text-slate-800">9 / 11</p>
+            <span class="text-[10px] text-amber-600">81%</span>
+          </div>
+          <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200">
+            <p class="text-slate-400 text-[10px]">IRBAN IV</p>
+            <p class="text-lg text-slate-800">7 / 11</p>
+            <span class="text-[10px] text-amber-600">63%</span>
+          </div>
+          <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200">
+            <p class="text-slate-400 text-[10px]">IRBAN KHUSUS</p>
+            <p class="text-lg text-slate-800">8 / 10</p>
+            <span class="text-[10px] text-emerald-600">80%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="pt-2 border-t border-slate-100 text-right">
+        <button onclick="togglePkptModal()" class="px-4 py-2 bg-slate-800 text-white rounded-xl text-xs font-bold">Tutup Modal</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const userRaw = localStorage.getItem('sim_user');
+    let currentUser = userRaw ? JSON.parse(userRaw) : { nama: 'Fadhilah Dwi Harso, S.ST', role: 'Irban Khusus' };
+
+    document.getElementById('nav-user-name').innerText = currentUser.nama;
+    document.getElementById('nav-user-role').innerText = currentUser.role;
+    document.getElementById('header-role-badge').innerHTML = `<i class="fa-solid fa-id-badge"></i> Akses: ${currentUser.role.toUpperCase()}`;
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById('main-sidebar');
+      const content = document.getElementById('main-content');
+      const toggleBtn = document.getElementById('floating-toggle-btn');
+
+      if (sidebar.classList.contains('-translate-x-[120%]')) {
+        sidebar.classList.remove('-translate-x-[120%]', 'opacity-0', 'pointer-events-none');
+        content.classList.replace('ml-10', 'ml-72');
+        toggleBtn.classList.add('hidden');
+      } else {
+        sidebar.classList.add('-translate-x-[120%]', 'opacity-0', 'pointer-events-none');
+        content.classList.replace('ml-72', 'ml-10');
+        toggleBtn.classList.remove('hidden');
+      }
+    }
+
+    function togglePkptModal() {
+      const modal = document.getElementById('pkpt-modal');
+      modal.classList.toggle('hidden');
+      modal.classList.toggle('flex');
+    }
+
+    function viewSuratTugas(noSt) {
+      alert(`[SIMBINWAS] Membuka Dokumen Surat Tugas Resmi:\nNomor: ${noSt}\n\nDokumen diverifikasi dengan Tanda Tangan Elektronik (TTE) Inspektur Daerah Kabupaten Serang.`);
     }
 
     function handleLogout() {
-      localStorage.removeItem('sim_token');
-      localStorage.removeItem('sim_user');
-      window.location.href = '/login.html';
+      if(confirm('Apakah Anda yakin ingin keluar dari SIMBINWAS?')) {
+        localStorage.clear();
+        window.location.href = '/login.html';
+      }
     }
   </script>
 </body>

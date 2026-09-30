@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Usulan Penugasan & Surat Tugas | SIMBINWAS Inspektorat Kabupaten Serang</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen flex relative overflow-x-hidden">
+
+  <!-- FLOATING TOGGLE BUTTON (MUNCUL SAAT SIDEBAR COLLAPSED) -->
+  <button id="floating-toggle-btn" onclick="toggleSidebar()" class="fixed top-5 left-5 z-40 bg-slate-900 text-white w-10 h-10 rounded-2xl shadow-xl flex items-center justify-center hover:bg-slate-800 transition transform hover:scale-105 hidden" title="Buka Panel Navigasi">
+    <i class="fa-solid fa-bars text-sm"></i>
+  </button>
+
+  <!-- FLOATING SIDEBAR PANEL -->
+  <aside id="main-sidebar" class="w-64 bg-slate-900/95 backdrop-blur-md text-slate-300 flex flex-col justify-between p-4 min-h-[calc(100vh-2.5rem)] my-5 ml-5 rounded-3xl shadow-2xl shadow-slate-900/30 fixed top-0 left-0 z-50 transition-all duration-300 overflow-hidden">
+    <div>
+      <!-- BRANDING LOGO -->
+      <div class="flex items-center justify-between px-2 py-3 border-b border-slate-800/80 mb-6">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-white/90 rounded-xl flex items-center justify-center p-1 shadow-md">
+            <img src="/logo-serang.svg" alt="Logo Kabupaten Serang" class="w-full h-full object-contain">
+          </div>
+          <div>
+            <h1 class="text-base font-black text-white leading-tight">SIMBINWAS</h1>
+            <p class="text-[10px] text-emerald-400 font-bold">Kabupaten Serang</p>
+          </div>
+        </div>
+        <button onclick="toggleSidebar()" class="text-slate-400 hover:text-white p-1 text-xs" title="Sembunyikan Sidebar">
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+      </div>
+
+      <!-- NAVIGATION MENU PANEL KIRI -->
+      <nav class="space-y-1.5 text-xs font-semibold">
+        <p class="px-3 text-[10px] uppercase font-bold text-slate-500 tracking-wider mb-2">Menu Utama</p>
+        <a href="/index.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800/80 hover:text-white rounded-xl transition">
+          <i class="fa-solid fa-chart-pie w-4 text-center text-slate-400"></i>
+          <span>Dashboard Executive</span>
+        </a>
+
+        <p class="px-3 text-[10px] uppercase font-bold text-slate-500 tracking-wider mt-6 mb-2">Input & Kontrol</p>
+        <a href="/pkpt-calendar.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800/80 hover:text-white rounded-xl transition">
+          <i class="fa-solid fa-calendar-check w-4 text-center text-amber-400"></i>
+          <span>Input & Jadwal PKPT</span>
+        </a>
+        <a href="/usulan-st.html" class="flex items-center gap-3 px-3 py-2.5 bg-emerald-600 text-white rounded-xl font-bold shadow-lg shadow-emerald-900/30">
+          <i class="fa-solid fa-file-signature w-4 text-center"></i>
+          <span>Usulan Penugasan / ST</span>
+        </a>
+        <a href="/kkp-review.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800/80 hover:text-white rounded-xl transition">
+          <i class="fa-solid fa-shield-halved w-4 text-center text-emerald-400"></i>
+          <span>Kontrol Pengawasan Berjenjang</span>
+        </a>
+
+        <p class="px-3 text-[10px] uppercase font-bold text-slate-500 tracking-wider mt-6 mb-2">Laporan & TLHP</p>
+        <a href="/tlhp-dashboard.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800/80 hover:text-white rounded-xl transition">
+          <i class="fa-solid fa-clock-rotate-left w-4 text-center text-red-400"></i>
+          <span>Pemantauan TLHP</span>
+        </a>
+      </nav>
+    </div>
+
+    <!-- USER LOGOUT INFO & COLLAPSE TRIGGER -->
+    <div class="pt-4 border-t border-slate-800/80 space-y-3">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2 overflow-hidden">
+          <div class="w-8 h-8 bg-emerald-600/20 text-emerald-400 rounded-lg flex items-center justify-center font-bold text-xs border border-emerald-500/30">
+            <i class="fa-solid fa-user-shield"></i>
+          </div>
+          <div class="truncate">
+            <p id="nav-user-name" class="text-xs font-bold text-white truncate">Fadhilah Dwi Harso, S.ST</p>
+            <p id="nav-user-role" class="text-[10px] text-slate-400 truncate">Irban Khusus</p>
+          </div>
+        </div>
+        <button onclick="handleLogout()" class="text-slate-400 hover:text-red-400 p-1.5 transition" title="Keluar Sistem">
+          <i class="fa-solid fa-right-from-bracket text-xs"></i>
+        </button>
+      </div>
+
+      <button onclick="toggleSidebar()" class="w-full py-2 bg-slate-800/80 hover:bg-slate-800 text-slate-400 hover:text-white rounded-xl text-[11px] font-bold transition flex items-center justify-center gap-2">
+        <i class="fa-solid fa-angles-left"></i> Sembunyikan Panel
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT AREA -->
+  <main id="main-content" class="flex-1 p-8 ml-72 transition-all duration-300 space-y-8 overflow-y-auto min-h-screen">
+    
+    <!-- TOP BAR HEADER -->
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl font-black text-slate-900">Usulan Penugasan & Surat Tugas</h1>
+        <p class="text-xs font-semibold text-slate-500">Pengajuan, Verifikasi Berjenjang, & Penerbitan ST Pengawasan</p>
+      </div>
+      <div class="flex items-center gap-3">
+        <button onclick="toggleModalUsulanSt()" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-lg shadow-emerald-200 transition flex items-center gap-2">
+          <i class="fa-solid fa-plus"></i> Buat Usulan ST Baru
+        </button>
+        <span id="header-role-badge" class="px-3 py-2 bg-slate-900 text-slate-200 font-extrabold text-xs rounded-xl flex items-center gap-1.5">
+          <i class="fa-solid fa-id-badge"></i> Akses: IRBAN KHUSUS
+        </span>
+      </div>
+    </div>
+
+    <!-- SUMMARY METRICS USULAN ST -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div class="glass-card p-5 rounded-3xl space-y-2 border border-slate-200/80 shadow-sm">
+        <span class="text-[10px] font-extrabold uppercase text-slate-400 tracking-wider">Usulan Dalam Proses</span>
+        <div class="flex items-baseline justify-between">
+          <h3 class="text-3xl font-black text-slate-900">4 <span class="text-sm font-bold text-slate-400">Draft</span></h3>
+          <span class="text-xs font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">Verifikasi Dalnis</span>
+        </div>
+        <p class="text-[11px] text-slate-500">Menunggu persetujuan Irban/Inspektur</p>
+      </div>
+
+      <div class="glass-card p-5 rounded-3xl space-y-2 border border-slate-200/80 shadow-sm">
+        <span class="text-[10px] font-extrabold uppercase text-slate-400 tracking-wider">Surat Tugas Disetujui (TTE)</span>
+        <div class="flex items-baseline justify-between">
+          <h3 class="text-3xl font-black text-emerald-600">8 <span class="text-sm font-bold text-slate-400">Aktif</span></h3>
+          <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Terbit TTE</span>
+        </div>
+        <p class="text-[11px] text-slate-500">Siap dilaksanakan di lapangan</p>
+      </div>
+
+      <div class="glass-card p-5 rounded-3xl space-y-2 border border-slate-200/80 shadow-sm">
+        <span class="text-[10px] font-extrabold uppercase text-slate-400 tracking-wider">Total Personel APIP Ditugaskan</span>
+        <div class="flex items-baseline justify-between">
+          <h3 class="text-3xl font-black text-slate-900">32 <span class="text-sm font-bold text-slate-400">Auditor</span></h3>
+          <span class="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">5 Tim Active</span>
+        </div>
+        <p class="text-[11px] text-slate-500">Terbagi pada 8 Obrik aktif</p>
+      </div>
+
+      <div class="glass-card p-5 rounded-3xl space-y-2 border border-slate-200/80 shadow-sm">
+        <span class="text-[10px] font-extrabold uppercase text-slate-400 tracking-wider">Total Hari Penugasan (HP)</span>
+        <div class="flex items-baseline justify-between">
+          <h3 class="text-3xl font-black text-slate-900">96 <span class="text-sm font-bold text-slate-400">HP</span></h3>
+          <span class="text-xs font-bold text-slate-600 bg-slate-100 px-2 py-0.5 rounded border border-slate-200">Rata-rata 12 HP</span>
+        </div>
+        <p class="text-[11px] text-slate-500">Sesuai alokasi anggaran PKPT</p>
+      </div>
+    </div>
+
+    <!-- TABEL TRACKING USULAN & SURAT TUGAS -->
+    <div class="glass-card p-6 rounded-3xl border border-slate-200/80 shadow-sm space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+        <div>
+          <h3 class="text-base font-extrabold text-slate-900">Daftar Usulan & Permohonan Surat Tugas</h3>
+          <p class="text-xs text-slate-500">Status verifikasi berjenjang dan penerbitan TTE Tanda Tangan Elektronik.</p>
+        </div>
+        <span class="text-xs font-bold bg-slate-100 text-slate-600 px-3 py-1 rounded-full border border-slate-200">12 Total Rekaman</span>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs border-collapse">
+          <thead>
+            <tr class="bg-slate-50/80 text-slate-500 font-extrabold uppercase border-b border-slate-200">
+              <th class="p-3">Obrik Target & Jenis Pengawasan</th>
+              <th class="p-3">Nomor ST / Usulan</th>
+              <th class="p-3">Periode & Alokasi HP</th>
+              <th class="p-3">Susunan Tim APIP</th>
+              <th class="p-3">Status Persetujuan</th>
+              <th class="p-3 text-center">Aksi Dokumen</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 font-medium text-slate-700">
+            <!-- ROW 1 (TTE TERBIT) -->
+            <tr class="hover:bg-slate-50/80 transition">
+              <td class="p-3">
+                <p class="font-bold text-slate-900">Audit Khusus Pengadaan Barang & Jasa</p>
+                <p class="text-[11px] text-slate-400">RSUD Kabupaten Serang</p>
+              </td>
+              <td class="p-3 font-mono text-slate-600 font-bold">ST/700/088/IRSUS/2026</td>
+              <td class="p-3">
+                <p class="font-bold">20 Sep - 10 Okt 2026</p>
+                <span class="text-[11px] text-slate-400 font-mono">15 Hari Penugasan</span>
+              </td>
+              <td class="p-3 text-[11px] space-y-0.5">
+                <p><b>PT:</b> Fadhilah Dwi Harso, S.ST</p>
+                <p><b>KT:</b> Rahmat Hidayat, M.Si</p>
+                <p class="text-slate-400"><b>Anggota:</b> 4 Personel</p>
+              </td>
+              <td class="p-3">
+                <span class="px-2.5 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 font-bold rounded-lg text-[10px] inline-flex items-center gap-1">
+                  <i class="fa-solid fa-file-circle-check"></i> Disetujui (TTE Terbit)
+                </span>
+              </td>
+              <td class="p-3 text-center">
+                <button onclick="previewSuratTugas('ST/700/088/IRSUS/2026')" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-bold text-[11px] shadow transition inline-flex items-center gap-1">
+                  <i class="fa-solid fa-file-pdf"></i> Pratinjau ST
+                </button>
+              </td>
+            </tr>
+
+            <!-- ROW 2 (VERIFIKASI DALNIS) -->
+            <tr class="hover:bg-slate-50/80 transition">
+              <td class="p-3">
+                <p class="font-bold text-slate-900">Reviu Evaluasi SAKIP TA 2026</p>
+                <p class="text-[11px] text-slate-400">Bappeda Kabupaten Serang</p>
+              </td>
+              <td class="p-3 font-mono text-slate-500 font-bold">REQ/104/IRBAN-3/2026</td>
+              <td class="p-3">
+                <p class="font-bold">01 Okt - 12 Okt 2026</p>
+                <span class="text-[11px] text-slate-400 font-mono">10 Hari Penugasan</span>
+              </td>
+              <td class="p-3 text-[11px] space-y-0.5">
+                <p><b>PT:</b> H. Ahmad Bahrudin, SE</p>
+                <p><b>KT:</b> Dewi Lestari, M.Si</p>
+                <p class="text-slate-400"><b>Anggota:</b> 3 Personel</p>
+              </td>
+              <td class="p-3">
+                <span class="px-2.5 py-1 bg-amber-50 text-amber-700 border border-amber-200 font-bold rounded-lg text-[10px] inline-flex items-center gap-1">
+                  <i class="fa-solid fa-clock"></i> Review Dalnis & Irban
+                </span>
+              </td>
+              <td class="p-3 text-center">
+                <button onclick="alert('Mengunggah draft usulan untuk ditinjau Dalnis.')" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-900 text-white rounded-lg font-bold text-[11px] shadow transition inline-flex items-center gap-1">
+                  <i class="fa-solid fa-pen-to-square"></i> Edit Usulan
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- MODAL BUAT USULAN ST BARU -->
+  <div id="modal-usulan-st" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <div class="bg-white w-full max-w-2xl rounded-3xl p-6 shadow-2xl space-y-5 overflow-y-auto max-h-[90vh]">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <h3 class="text-base font-extrabold text-slate-900">Form Pengajuan Usulan Surat Tugas (ST)</h3>
+        <button onclick="toggleModalUsulanSt()" class="text-slate-400 hover:text-slate-600 text-lg font-bold">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <form onsubmit="handleSimpanUsulanSt(event)" class="space-y-4 text-xs">
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Nama Obrik / SKPD Target Pemeriksaan</label>
+          <input type="text" required placeholder="Contoh: Dinas Pekerjaan Umum dan Penataan Ruang" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 focus:outline-none focus:border-emerald-500 font-medium">
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Jenis Pengawasan</label>
+            <select class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 focus:outline-none focus:border-emerald-500 font-bold">
+              <option>Audit Kinerja</option>
+              <option>Audit Khusus / Investigasi</option>
+              <option>Reviu Laporan Keuangan</option>
+              <option>Evaluasi SAKIP</option>
+              <option>Monitoring & Pendampingan</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Nomor Rencana PKPT / Dasar Surat</label>
+            <input type="text" value="PKPT/2026/IRBAN-KHUSUS/012" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 focus:outline-none focus:border-emerald-500 font-bold">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-3">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Tanggal Mulai</label>
+            <input type="date" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 focus:outline-none focus:border-emerald-500 font-bold">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Tanggal Selesai</label>
+            <input type="date" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 focus:outline-none focus:border-emerald-500 font-bold">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Alokasi HP</label>
+            <input type="number" value="12" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 focus:outline-none focus:border-emerald-500 font-bold">
+          </div>
+        </div>
+
+        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-3">
+          <p class="font-extrabold text-slate-800 uppercase tracking-wider text-[11px]">Susunan Tim APIP Penanggung Jawab</p>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block font-bold text-slate-600 mb-1">Pengendali Teknis (Dalnis)</label>
+              <input type="text" value="Fadhilah Dwi Harso, S.ST" required class="w-full bg-white border border-slate-200 rounded-xl p-2.5 font-semibold">
+            </div>
+            <div>
+              <label class="block font-bold text-slate-600 mb-1">Ketua Tim (Katim)</label>
+              <input type="text" value="Rahmat Hidayat, M.Si" required class="w-full bg-white border border-slate-200 rounded-xl p-2.5 font-semibold">
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-3 border-t border-slate-100 flex items-center justify-end gap-3">
+          <button type="button" onclick="toggleModalUsulanSt()" class="px-4 py-2.5 bg-slate-100 text-slate-600 rounded-xl font-bold">Batal</button>
+          <button type="submit" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold shadow-lg shadow-emerald-100">Kirim Usulan ST Ke Dalnis</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const userRaw = localStorage.getItem('sim_user');
+    let currentUser = userRaw ? JSON.parse(userRaw) : { nama: 'Fadhilah Dwi Harso, S.ST', role: 'Irban Khusus' };
+
+    document.getElementById('nav-user-name').innerText = currentUser.nama;
+    document.getElementById('nav-user-role').innerText = currentUser.role;
+    document.getElementById('header-role-badge').innerHTML = `<i class="fa-solid fa-id-badge"></i> Akses: ${currentUser.role.toUpperCase()}`;
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById('main-sidebar');
+      const content = document.getElementById('main-content');
+      const toggleBtn = document.getElementById('floating-toggle-btn');
+
+      if (sidebar.classList.contains('-translate-x-[120%]')) {
+        sidebar.classList.remove('-translate-x-[120%]', 'opacity-0', 'pointer-events-none');
+        content.classList.replace('ml-10', 'ml-72');
+        toggleBtn.classList.add('hidden');
+      } else {
+        sidebar.classList.add('-translate-x-[120%]', 'opacity-0', 'pointer-events-none');
+        content.classList.replace('ml-72', 'ml-10');
+        toggleBtn.classList.remove('hidden');
+      }
+    }
+
+    function toggleModalUsulanSt() {
+      const modal = document.getElementById('modal-usulan-st');
+      modal.classList.toggle('hidden');
+      modal.classList.toggle('flex');
+    }
+
+    function handleSimpanUsulanSt(e) {
+      e.preventDefault();
+      alert('[SIMBINWAS] Permohonan Surat Tugas baru berhasil dibuat dan diteruskan ke Pengendali Teknis untuk peninjauan.');
+      toggleModalUsulanSt();
+    }
+
+    function previewSuratTugas(noSt) {
+      alert(`[SIMBINWAS] Membuka Pratinjau Surat Tugas Resmi:\nNomor: ${noSt}\n\nKops: Inspektorat Daerah Kabupaten Serang\nStatus TTE: Tanda Tangan Elektronik Inspektur Daerah Terverifikasi.`);
+    }
+
+    function handleLogout() {
+      if(confirm('Apakah Anda yakin ingin keluar dari SIMBINWAS?')) {
+        localStorage.clear();
+        window.location.href = '/login.html';
+      }
+    }
+  </script>
+</body>
+</html>
