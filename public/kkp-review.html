@@ -3,222 +3,377 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Split-View KKP Review | SIM-Inspektorat Kabupaten Serang</title>
+  <title>Kontrol KKP & Reviu Berjenjang | SIMBINWAS Kabupaten Serang</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <style> body { font-family: 'Plus Jakarta Sans', sans-serif; } </style>
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+    }
+  </style>
+<script src="/js/app.js" defer></script>
 </head>
-<body class="bg-slate-50 text-slate-800 h-screen overflow-hidden flex flex-col">
+<body class="bg-slate-100 text-slate-800 min-h-screen flex relative overflow-x-hidden">
 
-  <!-- TOP NAVIGATION HEADER -->
-  <header class="bg-white border-b border-slate-200/80 h-16 px-6 flex items-center justify-between z-30 shadow-sm flex-shrink-0">
-    <div class="flex items-center space-x-3">
-      <a href="/index.html" class="w-9 h-9 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl flex items-center justify-center transition mr-1" title="Kembali ke Portal Utama">
-        <i class="fa-solid fa-arrow-left text-xs"></i>
-      </a>
-      <div class="w-10 h-10 bg-red-600 rounded-xl flex items-center justify-center font-black text-xl text-white shadow-md shadow-red-200">
-        <i class="fa-solid fa-file-signature"></i>
-      </div>
-      <div>
-        <div class="flex items-center gap-2">
-          <span class="bg-red-100 text-red-700 text-[10px] font-extrabold px-2 py-0.5 rounded border border-red-200 uppercase">KKP DIGITAL</span>
-          <h1 class="text-xs font-bold text-slate-800">SPT No: 090/012/SPT-IRBAN.KHUSUS/2026</h1>
-        </div>
-        <p class="text-[11px] font-medium text-slate-500">Pemeriksaan Operasional Dinas Kesehatan Kab. Serang</p>
-      </div>
-    </div>
+  <!-- FLOATING TOGGLE BUTTON (MUNCUL SAAT SIDEBAR COLLAPSED) -->
+  <button id="floating-toggle-btn" onclick="toggleSidebar()" class="fixed top-5 left-5 z-40 bg-slate-900 text-white w-10 h-10 rounded-2xl shadow-xl flex items-center justify-center hover:bg-slate-800 transition transform hover:scale-105 hidden" title="Buka Panel Navigasi">
+    <i class="fa-solid fa-bars text-sm"></i>
+  </button>
 
-    <div class="flex items-center space-x-4">
-      <span class="bg-amber-50 text-amber-700 border border-amber-200 px-3 py-1.5 rounded-xl font-bold text-xs flex items-center gap-1.5">
-        <i class="fa-solid fa-clock-rotate-left text-amber-500"></i> Review Ketua Tim
-      </span>
-      <button onclick="updateReviewStatus('REVIEW_SUPERVISOR')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs px-4 py-2.5 rounded-xl font-bold shadow-md shadow-emerald-100 transition flex items-center gap-1.5">
-        <i class="fa-solid fa-paper-plane"></i> Ajukan ke Supervisor
-      </button>
-      <div class="pl-3 border-l border-slate-200 hidden md:block">
-        <h4 id="user-display-name" class="text-xs font-bold text-slate-800">Fadhilah Dwi Harso, S.ST</h4>
-        <p id="user-display-role" class="text-[10px] font-semibold text-red-600">Ketua Tim Pemeriksa</p>
-      </div>
-    </div>
-  </header>
-
-  <!-- 3-PANEL SPLIT-VIEW CONTAINER -->
-  <div class="grid grid-cols-12 h-[calc(100vh-4rem)] divide-x divide-slate-200 flex-1 overflow-hidden">
-    
-    <!-- PANEL 1: DAFTAR PKA & INDEKS KKP (COL-3) -->
-    <section class="col-span-3 bg-white flex flex-col h-full overflow-hidden">
-      <div class="p-4 bg-slate-50/80 border-b border-slate-200 flex justify-between items-center">
-        <h2 class="text-xs font-extrabold text-slate-800 uppercase tracking-wider">Program Kerja Audit (PKA)</h2>
-        <span class="text-[10px] bg-slate-200 text-slate-700 px-2.5 py-0.5 rounded-full font-bold">3 Prosedur</span>
-      </div>
-      <div class="p-3 overflow-y-auto space-y-2.5 flex-1">
-        
-        <!-- PKA Item 1 -->
-        <div onclick="selectPka('PKA-01')" id="pka-item-PKA-01" class="p-3.5 border rounded-2xl cursor-pointer transition border-blue-500 bg-blue-50/40 shadow-sm">
-          <div class="flex items-center justify-between mb-1">
-            <span class="text-xs font-bold text-blue-700">PKA-01 (Pengadaan Obat)</span>
-            <span class="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-md">Selesai</span>
-          </div>
-          <p class="text-xs text-slate-600 line-clamp-2 font-medium">Pengujian kelengkapan dokumen berita acara serah terima barang farmasi.</p>
-          <div class="mt-2.5 flex justify-between text-[11px] text-slate-500 font-medium">
-            <span>Pelaksana: Anggota Tim 1</span>
-            <i class="fa-solid fa-chevron-right text-slate-400"></i>
-          </div>
-        </div>
-
-        <!-- PKA Item 2 -->
-        <div onclick="selectPka('PKA-02')" id="pka-item-PKA-02" class="p-3.5 border border-slate-200 rounded-2xl cursor-pointer transition hover:bg-slate-50">
-          <div class="flex items-center justify-between mb-1">
-            <span class="text-xs font-bold text-slate-800">PKA-02 (Uji Petik Fisik)</span>
-            <span class="text-[10px] bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded-md">Proses</span>
-          </div>
-          <p class="text-xs text-slate-600 line-clamp-2 font-medium">Cek sampel fisik ketersediaan stok vaksin expired date di gudang Instalasi Farmasi.</p>
-          <div class="mt-2.5 flex justify-between text-[11px] text-slate-500 font-medium">
-            <span>Pelaksana: Anggota Tim 2</span>
-            <i class="fa-solid fa-chevron-right text-slate-400"></i>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- PANEL 2: DETAIL KERTAS KERJA & BUKTI FISIK (COL-5) -->
-    <section class="col-span-5 bg-slate-50 flex flex-col h-full overflow-hidden">
-      <div class="p-4 bg-white border-b border-slate-200 flex justify-between items-center">
-        <h2 class="text-xs font-extrabold text-slate-800 uppercase tracking-wider">Hasil Pengujian & Lampiran Bukti</h2>
-        <span class="text-xs font-mono font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded">ID: KKP-PKA-01</span>
-      </div>
-      <div class="p-4 overflow-y-auto space-y-4 flex-1">
-        
-        <!-- Uraian Prosedur & Hasil Pengujian -->
-        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm space-y-3">
-          <h3 class="text-xs font-extrabold text-slate-500 uppercase tracking-wider">Uraian Hasil Pengujian Lapangan</h3>
-          <p class="text-xs text-slate-700 leading-relaxed bg-slate-50/80 p-3.5 rounded-xl border border-slate-200/60 font-medium">
-            Telah dilakukan uji petik terhadap 15 BAST Beli Obat Periode Triwulan II. Ditemukan keterlambatan penyerahan barang selama 14 hari kerja pada Paket Obat Generik PT. X tanpa pengenaan denda keterlambatan.
-          </p>
-        </div>
-
-        <!-- Lampiran Bukti Foto / PDF -->
-        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm space-y-3">
-          <h3 class="text-xs font-extrabold text-slate-500 uppercase tracking-wider">Lampiran Digital (KKP-Proof)</h3>
-          <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-200/80 text-xs">
-            <div class="flex items-center space-x-2.5">
-              <i class="fa-solid fa-file-pdf text-red-500 text-lg"></i>
-              <span class="font-bold text-slate-700">BAST_Pengadaan_Obat_Signed.pdf</span>
-            </div>
-            <button class="text-blue-600 hover:text-blue-800 font-bold text-[11px] bg-blue-50 px-2.5 py-1 rounded">Preview</button>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- PANEL 3: NOTISI TEMUAN AUDIT 5 UNSUR (COL-4) -->
-    <section class="col-span-4 bg-white flex flex-col h-full overflow-hidden">
-      <div class="p-4 bg-red-50/80 border-b border-red-100 flex justify-between items-center">
-        <h2 class="text-xs font-extrabold text-red-800 uppercase tracking-wider flex items-center gap-1.5">
-          <i class="fa-solid fa-triangle-exclamation"></i> Form Notisi Temuan 5 Unsur
-        </h2>
-      </div>
-      <div class="p-4 overflow-y-auto space-y-3 flex-1">
-        
-        <div>
-          <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">1. Kondisi</label>
-          <textarea id="kondisi" rows="2" class="w-full text-xs p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-red-100 focus:border-red-500 focus:bg-white focus:outline-none font-medium" placeholder="Fakta yang ditemukan di lapangan..."></textarea>
-        </div>
-
-        <div>
-          <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">2. Kriteria</label>
-          <textarea id="kriteria" rows="2" class="w-full text-xs p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-red-100 focus:border-red-500 focus:bg-white focus:outline-none font-medium" placeholder="Aturan / Perpres / Permendagri yang dilanggar..."></textarea>
-        </div>
-
-        <div class="grid grid-cols-2 gap-2">
-          <div>
-            <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">3. Sebab</label>
-            <textarea id="sebab" rows="2" class="w-full text-xs p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-red-100 focus:border-red-500 focus:bg-white focus:outline-none font-medium" placeholder="Penyebab terjadinya..."></textarea>
+  <!-- FLOATING SIDEBAR PANEL -->
+  <aside id="main-sidebar" class="w-64 bg-slate-900/95 backdrop-blur-md text-slate-300 flex flex-col justify-between p-4 min-h-[calc(100vh-2.5rem)] my-5 ml-5 rounded-3xl shadow-2xl shadow-slate-900/30 fixed top-0 left-0 z-50 transition-all duration-300 overflow-hidden">
+    <div>
+      <!-- BRANDING LOGO -->
+      <div class="flex items-center justify-between px-2 py-3 border-b border-slate-800/80 mb-6">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-white/90 rounded-xl flex items-center justify-center p-1 shadow-md">
+            <img src="/logo-serang.png" alt="Logo Kabupaten Serang" class="w-full h-full object-contain">
           </div>
           <div>
-            <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">4. Akibat</label>
-            <textarea id="akibat" rows="2" class="w-full text-xs p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-red-100 focus:border-red-500 focus:bg-white focus:outline-none font-medium" placeholder="Dampak / potensi kerugian..."></textarea>
+            <h1 class="text-base font-black text-white leading-tight">SIMBINWAS</h1>
+            <p class="text-[10px] text-emerald-400 font-bold">Kabupaten Serang</p>
           </div>
         </div>
-
-        <div>
-          <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">5. Rekomendasi & Nilai (Rp)</label>
-          <div class="space-y-2">
-            <input type="text" id="uraian_rekomendasi" class="w-full text-xs p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-red-100 focus:border-red-500 focus:bg-white focus:outline-none font-medium" placeholder="Uraian Rekomendasi APIP...">
-            <input type="number" id="nilai_rekomendasi_rp" class="w-full text-xs p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-red-100 focus:border-red-500 focus:bg-white focus:outline-none font-medium" placeholder="Nilai Rekomendasi / Kerugian (Rp)...">
-          </div>
-        </div>
-
-        <button onclick="simpanNotisiTemuan()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold text-xs py-3 rounded-xl shadow-lg shadow-red-100 transition flex items-center justify-center gap-1.5 mt-2">
-          <i class="fa-solid fa-floppy-disk"></i> Simpan Notisi Temuan
+        <button onclick="toggleSidebar()" class="text-slate-400 hover:text-white p-1 text-xs" title="Sembunyikan Sidebar">
+          <i class="fa-solid fa-chevron-left"></i>
         </button>
-
       </div>
-    </section>
 
+      <!-- NAVIGATION MENU PANEL KIRI -->
+      <nav class="space-y-1.5 text-xs font-semibold">
+        <p class="px-3 text-[10px] uppercase font-bold text-slate-500 tracking-wider mb-2">Menu Utama</p>
+        <a href="/index.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800/80 hover:text-white rounded-xl transition">
+          <i class="fa-solid fa-chart-pie w-4 text-center text-slate-400"></i>
+          <span>Dashboard Executive</span>
+        </a>
+
+        <p class="px-3 text-[10px] uppercase font-bold text-slate-500 tracking-wider mt-6 mb-2">Input & Kontrol</p>
+        <a href="/pkpt-calendar.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800/80 hover:text-white rounded-xl transition">
+          <i class="fa-solid fa-calendar-check w-4 text-center text-amber-400"></i>
+          <span>Input & Jadwal PKPT</span>
+        </a>
+        <a href="/usulan-st.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800/80 hover:text-white rounded-xl transition">
+          <i class="fa-solid fa-file-signature w-4 text-center text-blue-400"></i>
+          <span>Usulan Penugasan / ST</span>
+        </a>
+        <a href="/kkp-review.html" class="flex items-center gap-3 px-3 py-2.5 bg-emerald-600 text-white rounded-xl font-bold shadow-lg shadow-emerald-900/30">
+          <i class="fa-solid fa-shield-halved w-4 text-center"></i>
+          <span>Kontrol Pengawasan Berjenjang</span>
+        </a>
+
+        <p class="px-3 text-[10px] uppercase font-bold text-slate-500 tracking-wider mt-6 mb-2">Laporan & TLHP</p>
+        <a href="/tlhp-dashboard.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800/80 hover:text-white rounded-xl transition">
+          <i class="fa-solid fa-clock-rotate-left w-4 text-center text-red-400"></i>
+          <span>Pemantauan TLHP</span>
+        </a>
+      </nav>
+    </div>
+
+    <!-- USER LOGOUT INFO & COLLAPSE TRIGGER -->
+    <div class="pt-4 border-t border-slate-800/80 space-y-3">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2 overflow-hidden">
+          <div class="w-8 h-8 bg-emerald-600/20 text-emerald-400 rounded-lg flex items-center justify-center font-bold text-xs border border-emerald-500/30">
+            <i class="fa-solid fa-user-shield"></i>
+          </div>
+          <div class="truncate">
+            <p id="nav-user-name" class="text-xs font-bold text-white truncate">Fadhilah Dwi Harso, S.ST</p>
+            <p id="nav-user-role" class="text-[10px] text-slate-400 truncate">Irban Khusus</p>
+          </div>
+        </div>
+        <button onclick="handleLogout()" class="text-slate-400 hover:text-red-400 p-1.5 transition" title="Keluar Sistem">
+          <i class="fa-solid fa-right-from-bracket text-xs"></i>
+        </button>
+      </div>
+
+      <button onclick="toggleSidebar()" class="w-full py-2 bg-slate-800/80 hover:bg-slate-800 text-slate-400 hover:text-white rounded-xl text-[11px] font-bold transition flex items-center justify-center gap-2">
+        <i class="fa-solid fa-angles-left"></i> Sembunyikan Panel
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT AREA -->
+  <main id="main-content" class="flex-1 p-8 ml-72 transition-all duration-300 space-y-8 overflow-y-auto min-h-screen">
+    
+    <!-- TOP BAR HEADER -->
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl font-black text-slate-900">Kontrol KKP & Reviu Berjenjang</h1>
+        <p class="text-xs font-semibold text-slate-500">Kompilasi KKP Final Ketua Tim, Matriks Catatan Reviu Dalnis & Irban</p>
+      </div>
+      <div class="flex items-center gap-3">
+        <button onclick="toggleModalUploadKkp()" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-lg shadow-emerald-200 transition flex items-center gap-2">
+          <i class="fa-solid fa-cloud-arrow-up"></i> Upload Kompilasi KKP (Katim)
+        </button>
+        <span id="header-role-badge" class="px-3 py-2 bg-slate-900 text-slate-200 font-extrabold text-xs rounded-xl flex items-center gap-1.5">
+          <i class="fa-solid fa-id-badge"></i> Akses: IRBAN KHUSUS
+        </span>
+      </div>
+    </div>
+
+    <!-- SUMMARY METRICS KKP -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div class="glass-card p-5 rounded-3xl space-y-2 border border-slate-200/80 shadow-sm">
+        <span class="text-[10px] font-extrabold uppercase text-slate-400 tracking-wider">KKP Menunggu Reviu Dalnis</span>
+        <div class="flex items-baseline justify-between">
+          <h3 class="text-3xl font-black text-amber-600">3 <span class="text-sm font-bold text-slate-400">Berkas</span></h3>
+          <span class="text-xs font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">Review Dalnis</span>
+        </div>
+        <p class="text-[11px] text-slate-500">Perlu pemeriksaan Pengendali Teknis</p>
+      </div>
+
+      <div class="glass-card p-5 rounded-3xl space-y-2 border border-slate-200/80 shadow-sm">
+        <span class="text-[10px] font-extrabold uppercase text-slate-400 tracking-wider">KKP Menunggu Approval Irban</span>
+        <div class="flex items-baseline justify-between">
+          <h3 class="text-3xl font-black text-blue-600">2 <span class="text-sm font-bold text-slate-400">Berkas</span></h3>
+          <span class="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">Review Irban</span>
+        </div>
+        <p class="text-[11px] text-slate-500">Siap Sign-Off Final</p>
+      </div>
+
+      <div class="glass-card p-5 rounded-3xl space-y-2 border border-slate-200/80 shadow-sm">
+        <span class="text-[10px] font-extrabold uppercase text-slate-400 tracking-wider">Dikembalikan (Perlu Revisi Katim)</span>
+        <div class="flex items-baseline justify-between">
+          <h3 class="text-3xl font-black text-red-600">1 <span class="text-sm font-bold text-slate-400">Berkas</span></h3>
+          <span class="text-xs font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded border border-red-200">Revisi Katim</span>
+        </div>
+        <p class="text-[11px] text-slate-500">Ada catatan perbaikan Dalnis/Irban</p>
+      </div>
+
+      <div class="glass-card p-5 rounded-3xl space-y-2 border border-slate-200/80 shadow-sm">
+        <span class="text-[10px] font-extrabold uppercase text-slate-400 tracking-wider">KKP Approved & Terunci</span>
+        <div class="flex items-baseline justify-between">
+          <h3 class="text-3xl font-black text-emerald-600">18 <span class="text-sm font-bold text-slate-400">ACC</span></h3>
+          <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Locked / Arsip</span>
+        </div>
+        <p class="text-[11px] text-slate-500">Tersimpan di Arsip Digital LHP</p>
+      </div>
+    </div>
+
+    <!-- TABEL KONTROL KKP & HIARARKI VERIFIKASI -->
+    <div class="glass-card p-6 rounded-3xl border border-slate-200/80 shadow-sm space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+        <div>
+          <h3 class="text-base font-extrabold text-slate-900">Daftar Berkas Kompilasi KKP Final</h3>
+          <p class="text-xs text-slate-500">Arsip terpusat KKP per Surat Tugas, pelacakan revisi, dan lembar catatan reviu.</p>
+        </div>
+        <span class="text-xs font-bold bg-slate-100 text-slate-600 px-3 py-1 rounded-full border border-slate-200">24 Total KKP</span>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs border-collapse">
+          <thead>
+            <tr class="bg-slate-50/80 text-slate-500 font-extrabold uppercase border-b border-slate-200">
+              <th class="p-3">Obrik Target & Nomor ST</th>
+              <th class="p-3">Pengunggah (Ketua Tim)</th>
+              <th class="p-3">Versi Berkas KKP</th>
+              <th class="p-3">Status Verifikasi Hirarki</th>
+              <th class="p-3 text-center">Matriks Catatan & Aksi</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 font-medium text-slate-700">
+            <!-- ROW 1 (NEED REVISION BY KATIM) -->
+            <tr class="hover:bg-slate-50/80 transition">
+              <td class="p-3">
+                <p class="font-bold text-slate-900">Audit Khusus Pengadaan Barang & Jasa</p>
+                <p class="text-[11px] text-slate-400">RSUD Kabupaten Serang (ST/700/088/IRSUS/2026)</p>
+              </td>
+              <td class="p-3">
+                <p class="font-bold text-slate-800">Rahmat Hidayat, M.Si</p>
+                <p class="text-[10px] text-slate-400">Diunggah: 28 Sep 2026</p>
+              </td>
+              <td class="p-3">
+                <span class="px-2 py-1 bg-slate-100 font-mono font-bold rounded text-slate-700 border border-slate-200">KKP_RSUD_v1.pdf</span>
+              </td>
+              <td class="p-3">
+                <span class="px-2.5 py-1 bg-red-50 text-red-700 border border-red-200 font-bold rounded-lg text-[10px] inline-flex items-center gap-1">
+                  <i class="fa-solid fa-circle-exclamation"></i> Minta Revisi (Dalnis)
+                </span>
+              </td>
+              <td class="p-3 text-center space-x-1">
+                <button onclick="openReviewMatrix('RSUD Kabupaten Serang', 'ST/700/088/IRSUS/2026', 'Dalnis Minta Tambahan BA Opname Fisik')" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-900 text-white rounded-lg font-bold text-[11px] shadow transition inline-flex items-center gap-1">
+                  <i class="fa-solid fa-clipboard-list"></i> Lihat Catatan Reviu
+                </button>
+              </td>
+            </tr>
+
+            <!-- ROW 2 (ACC FINAL BY IRBAN) -->
+            <tr class="hover:bg-slate-50/80 transition">
+              <td class="p-3">
+                <p class="font-bold text-slate-900">Audit Kinerja Pengelolaan Dana BOS</p>
+                <p class="text-[11px] text-slate-400">Dinas Pendidikan (ST/094/012/IRBAN-I/2026)</p>
+              </td>
+              <td class="p-3">
+                <p class="font-bold text-slate-800">Hendra Wijaya, S.ST</p>
+                <p class="text-[10px] text-slate-400">Diunggah: 25 Sep 2026</p>
+              </td>
+              <td class="p-3">
+                <span class="px-2 py-1 bg-emerald-50 font-mono font-bold rounded text-emerald-800 border border-emerald-200">KKP_BOS_v2_FINAL.pdf</span>
+              </td>
+              <td class="p-3">
+                <span class="px-2.5 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 font-bold rounded-lg text-[10px] inline-flex items-center gap-1">
+                  <i class="fa-solid fa-circle-check"></i> ACC Final (Irban Khusus)
+                </span>
+              </td>
+              <td class="p-3 text-center space-x-1">
+                <button onclick="openReviewMatrix('Dinas Pendidikan & Kebudayaan', 'ST/094/012/IRBAN-I/2026', 'Lengkap dan Disetujui Tanpa Catatan')" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-bold text-[11px] shadow transition inline-flex items-center gap-1">
+                  <i class="fa-solid fa-lock"></i> KKP Locked / Detail
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- MODAL UPLOAD KOMPILASI KKP (KHUSUS KATIM) -->
+  <div id="modal-upload-kkp" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <div class="bg-white w-full max-w-xl rounded-3xl p-6 shadow-2xl space-y-5">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <h3 class="text-base font-extrabold text-slate-900">Upload Kompilasi KKP Final (Ketua Tim)</h3>
+        <button onclick="toggleModalUploadKkp()" class="text-slate-400 hover:text-slate-600 text-lg font-bold">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <form onsubmit="handleSimpanKkp(event)" class="space-y-4 text-xs">
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Pilih Surat Tugas / Obrik Target</label>
+          <select class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 focus:outline-none focus:border-emerald-500 font-bold">
+            <option>ST/700/088/IRSUS/2026 - RSUD Kabupaten Serang</option>
+            <option>ST/094/012/IRBAN-I/2026 - Dinas Pendidikan & Kebudayaan</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Unggah Berkas KKP Master (PDF / Excel / ZIP)</label>
+          <input type="file" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 focus:outline-none focus:border-emerald-500 font-medium">
+          <p class="text-[10px] text-slate-400 mt-1">*Maksimal ukuran file 15 MB. File merupakan kompilasi dari seluruh anggota tim.</p>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Pengantar / Catatan Ringkas Ketua Tim</label>
+          <textarea rows="3" placeholder="Contoh: Seluruh KKP Sub-kegiatan Pengadaan Modal Utama telah diselesaikan dan dirangkum." class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 focus:outline-none focus:border-emerald-500"></textarea>
+        </div>
+
+        <div class="pt-3 border-t border-slate-100 flex items-center justify-end gap-3">
+          <button type="button" onclick="toggleModalUploadKkp()" class="px-4 py-2.5 bg-slate-100 text-slate-600 rounded-xl font-bold">Batal</button>
+          <button type="submit" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold shadow-lg shadow-emerald-100">Kirim Ke Dalnis Untuk Reviu</button>
+        </div>
+      </form>
+    </div>
   </div>
 
-  <!-- SCRIPT INTEGRASI REST API -->
+  <!-- MODAL MATRIKS CATATAN REVIU (DALNIS & IRBAN) -->
+  <div id="modal-review-matrix" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <div class="bg-white w-full max-w-2xl rounded-3xl p-6 shadow-2xl space-y-5">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div>
+          <h3 id="matrix-title" class="text-base font-extrabold text-slate-900">Matriks Reviu Berjenjang</h3>
+          <p id="matrix-subtitle" class="text-[11px] text-slate-400 font-mono"></p>
+        </div>
+        <button onclick="toggleModalMatrix()" class="text-slate-400 hover:text-slate-600 text-lg font-bold">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- HISTORI CATATAN -->
+      <div class="space-y-3 text-xs">
+        <p class="font-extrabold text-slate-800 uppercase tracking-wider text-[10px]">Histori Lembar Catatan Reviu</p>
+        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
+          <div class="flex items-center justify-between border-b border-slate-200/60 pb-2">
+            <span class="font-bold text-slate-900"><i class="fa-solid fa-user-check text-emerald-600 mr-1"></i> Fadhilah Dwi Harso, S.ST (Pengendali Teknis)</span>
+            <span class="text-[10px] text-slate-400">29 Sep 2026, 10:15 WIB</span>
+          </div>
+          <p id="matrix-note-content" class="text-slate-600 leading-relaxed font-medium"></p>
+        </div>
+      </div>
+
+      <!-- FORM INPUT REVIU KHUSUS DALNIS & IRBAN -->
+      <form onsubmit="handleSimpanReview(event)" class="space-y-3 text-xs pt-2 border-t border-slate-100">
+        <label class="block font-bold text-slate-700">Tambah Catatan Reviu Baru / Keputusan</label>
+        <textarea rows="2" placeholder="Tulis catatan perbaikan atau instruksi untuk Ketua Tim..." class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 focus:outline-none focus:border-emerald-500 font-medium"></textarea>
+
+        <div class="flex items-center justify-between pt-2">
+          <div class="flex gap-2">
+            <button type="submit" name="action" value="revisi" class="px-4 py-2 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 rounded-xl font-bold transition">
+              <i class="fa-solid fa-rotate-left mr-1"></i> Minta Revisi Katim
+            </button>
+            <button type="submit" name="action" value="acc" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold shadow transition">
+              <i class="fa-solid fa-check mr-1"></i> Setujui & Teruskan (ACC)
+            </button>
+          </div>
+          <button type="button" onclick="toggleModalMatrix()" class="px-3 py-2 text-slate-400 hover:text-slate-600 font-bold">Tutup</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script>
-    const API_BASE = '/api';
+    const userRaw = localStorage.getItem('sim_user');
+    let currentUser = userRaw ? JSON.parse(userRaw) : { nama: 'Fadhilah Dwi Harso, S.ST', role: 'Irban Khusus' };
 
-    // Guard Authentication
-    const token = localStorage.getItem('sim_token');
-    const user = JSON.parse(localStorage.getItem('sim_user') || '{}');
-    if (!token) window.location.href = '/login.html';
-    if (user.nama) document.getElementById('user-display-name').innerText = user.nama;
-    if (user.jabatan) document.getElementById('user-display-role').innerText = user.jabatan;
+    document.getElementById('nav-user-name').innerText = currentUser.nama;
+    document.getElementById('nav-user-role').innerText = currentUser.role;
+    document.getElementById('header-role-badge').innerHTML = `<i class="fa-solid fa-id-badge"></i> Akses: ${currentUser.role.toUpperCase()}`;
 
-    async function simpanNotisiTemuan() {
-      const payload = {
-        kkp_header_id: "00000000-0000-0000-0000-000000000000",
-        kondisi: document.getElementById('kondisi').value,
-        kriteria: document.getElementById('kriteria').value,
-        sebab: document.getElementById('sebab').value,
-        akibat: document.getElementById('akibat').value,
-        kategori_temuan: 'KEPATUHAN',
-        rekomendasi_list: [
-          {
-            kode_rekomendasi: 'REK-01',
-            uraian_rekomendasi: document.getElementById('uraian_rekomendasi').value,
-            nilai_rekomendasi_rp: parseFloat(document.getElementById('nilai_rekomendasi_rp').value) || 0
-          }
-        ]
-      };
+    function toggleSidebar() {
+      const sidebar = document.getElementById('main-sidebar');
+      const content = document.getElementById('main-content');
+      const toggleBtn = document.getElementById('floating-toggle-btn');
 
-      try {
-        const response = await fetch(`${API_BASE}/kkp/temuan`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-        const result = await response.json();
-        if(result.success) {
-          alert('Notisi Temuan 5 Unsur Berhasil Disimpan!');
-        } else {
-          alert('Gagal menyimpan: ' + result.error);
-        }
-      } catch (err) {
-        alert('Terjadi kesalahan sistem: ' + err.message);
+      if (sidebar.classList.contains('-translate-x-[120%]')) {
+        sidebar.classList.remove('-translate-x-[120%]', 'opacity-0', 'pointer-events-none');
+        content.classList.replace('ml-10', 'ml-72');
+        toggleBtn.classList.add('hidden');
+      } else {
+        sidebar.classList.add('-translate-x-[120%]', 'opacity-0', 'pointer-events-none');
+        content.classList.replace('ml-72', 'ml-10');
+        toggleBtn.classList.remove('hidden');
       }
     }
 
-    async function updateReviewStatus(targetStatus) {
-      try {
-        const response = await fetch(`${API_BASE}/kkp/review-status`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ kkp_header_id: "00000000-0000-0000-0000-000000000000", target_status: targetStatus })
-        });
-        const result = await response.json();
-        if(result.success) {
-          alert(result.message);
-        }
-      } catch (err) {
-        alert('Gagal update status review: ' + err.message);
+    function toggleModalUploadKkp() {
+      const modal = document.getElementById('modal-upload-kkp');
+      modal.classList.toggle('hidden');
+      modal.classList.toggle('flex');
+    }
+
+    function toggleModalMatrix() {
+      const modal = document.getElementById('modal-review-matrix');
+      modal.classList.toggle('hidden');
+      modal.classList.toggle('flex');
+    }
+
+    function openReviewMatrix(obrik, noSt, catatan) {
+      document.getElementById('matrix-title').innerText = `Matriks Reviu: ${obrik}`;
+      document.getElementById('matrix-subtitle').innerText = `Nomor Surat Tugas: ${noSt}`;
+      document.getElementById('matrix-note-content').innerText = `"${catatan}"`;
+      toggleModalMatrix();
+    }
+
+    function handleSimpanKkp(e) {
+      e.preventDefault();
+      alert('[SIMBINWAS] Berkas Kompilasi KKP berhasil diunggah dan status diperbarui menjadi "Review Dalnis".');
+      toggleModalUploadKkp();
+    }
+
+    function handleSimpanReview(e) {
+      e.preventDefault();
+      alert('[SIMBINWAS] Catatan Reviu berhasil disimpan dan sistem telah mengirim notifikasi ke Ketua Tim.');
+      toggleModalMatrix();
+    }
+
+    function handleLogout() {
+      if(confirm('Apakah Anda yakin ingin keluar dari SIMBINWAS?')) {
+        localStorage.clear();
+        window.location.href = '/login.html';
       }
     }
   </script>

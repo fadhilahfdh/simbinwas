@@ -15,6 +15,7 @@
       border: 1px solid rgba(255, 255, 255, 0.6);
     }
   </style>
+  <script src="/js/app.js" defer></script>
 </head>
 <body class="bg-slate-100 text-slate-800 min-h-screen flex relative overflow-x-hidden">
 
@@ -37,7 +38,7 @@
             <p class="text-[10px] text-emerald-400 font-bold">Kabupaten Serang</p>
           </div>
         </div>
-        <button onclick="toggleSidebar()" class="text-slate-400 hover:text-white p-1 text-xs">
+        <button onclick="toggleSidebar()" class="text-slate-400 hover:text-white p-1 text-xs" title="Sembunyikan Sidebar">
           <i class="fa-solid fa-chevron-left"></i>
         </button>
       </div>
@@ -56,9 +57,9 @@
           <span>Input & Jadwal PKPT</span>
         </a>
         <a href="/usulan-st.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800/80 hover:text-white rounded-xl transition">
-  <i class="fa-solid fa-file-signature w-4 text-center text-blue-400"></i>
-  <span>Usulan Penugasan / ST</span>
-</a>
+          <i class="fa-solid fa-file-signature w-4 text-center text-blue-400"></i>
+          <span>Usulan Penugasan / ST</span>
+        </a>
         <a href="/kkp-review.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800/80 hover:text-white rounded-xl transition">
           <i class="fa-solid fa-shield-halved w-4 text-center text-emerald-400"></i>
           <span>Kontrol Pengawasan Berjenjang</span>
@@ -72,19 +73,26 @@
       </nav>
     </div>
 
-    <!-- USER LOGOUT INFO -->
-    <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between">
-      <div class="flex items-center gap-2 overflow-hidden">
-        <div class="w-8 h-8 bg-emerald-600/20 text-emerald-400 rounded-lg flex items-center justify-center font-bold text-xs border border-emerald-500/30">
-          <i class="fa-solid fa-user-shield"></i>
+    <!-- USER LOGOUT INFO & TOMBOL SEMBUNYIKAN PANEL -->
+    <div class="pt-4 border-t border-slate-800/80 space-y-3">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2 overflow-hidden">
+          <div class="w-8 h-8 bg-emerald-600/20 text-emerald-400 rounded-lg flex items-center justify-center font-bold text-xs border border-emerald-500/30">
+            <i class="fa-solid fa-user-shield"></i>
+          </div>
+          <div class="truncate">
+            <p id="nav-user-name" class="text-xs font-bold text-white truncate">Fadhilah Dwi Harso, S.ST</p>
+            <p id="nav-user-role" class="text-[10px] text-slate-400 truncate">Irban Khusus</p>
+          </div>
         </div>
-        <div class="truncate">
-          <p id="nav-user-name" class="text-xs font-bold text-white truncate">Fadhilah Dwi Harso, S.ST</p>
-          <p id="nav-user-role" class="text-[10px] text-slate-400 truncate">Irban Khusus</p>
-        </div>
+        <button onclick="handleLogout()" class="text-slate-400 hover:text-red-400 p-1.5 transition" title="Keluar Sistem">
+          <i class="fa-solid fa-right-from-bracket text-xs"></i>
+        </button>
       </div>
-      <button onclick="handleLogout()" class="text-slate-400 hover:text-red-400 p-1.5 transition" title="Keluar Sistem">
-        <i class="fa-solid fa-right-from-bracket text-xs"></i>
+
+      <!-- TOMBOL SEMBUNYIKAN PANEL (TAMBAHAN PERBAIKAN) -->
+      <button onclick="toggleSidebar()" class="w-full py-2 bg-slate-800/80 hover:bg-slate-800 text-slate-400 hover:text-white rounded-xl text-[11px] font-bold transition flex items-center justify-center gap-2">
+        <i class="fa-solid fa-angles-left"></i> Sembunyikan Panel
       </button>
     </div>
   </aside>
@@ -295,18 +303,16 @@
     document.getElementById('nav-user-role').innerText = currentUser.role;
     document.getElementById('header-role-badge').innerHTML = `<i class="fa-solid fa-id-badge"></i> Akses: ${currentUser.role.toUpperCase()}`;
 
-      function toggleSidebar() {
+    function toggleSidebar() {
       const sidebar = document.getElementById('main-sidebar');
       const content = document.getElementById('main-content');
       const toggleBtn = document.getElementById('floating-toggle-btn');
 
       if (sidebar.classList.contains('-translate-x-[120%]')) {
-        // MUNCULKAN SIDEBAR
         sidebar.classList.remove('-translate-x-[120%]', 'opacity-0', 'pointer-events-none');
         content.classList.replace('ml-10', 'ml-72');
         toggleBtn.classList.add('hidden');
       } else {
-        // SEMBUNYIKAN SIDEBAR (Gunakan -120% agar tergeser jauh dari pinggir layar)
         sidebar.classList.add('-translate-x-[120%]', 'opacity-0', 'pointer-events-none');
         content.classList.replace('ml-72', 'ml-10');
         toggleBtn.classList.remove('hidden');
@@ -323,13 +329,6 @@
       e.preventDefault();
       alert('[SIMBINWAS] Usulan Obrik PKPT Baru berhasil disimpan dan diteruskan ke Inspektur untuk persetujuan.');
       toggleModalUsulan();
-    }
-
-    function handleLogout() {
-      if(confirm('Apakah Anda yakin ingin keluar dari SIMBINWAS?')) {
-        localStorage.clear();
-        window.location.href = '/login.html';
-      }
     }
   </script>
 </body>
