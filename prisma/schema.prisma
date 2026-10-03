@@ -1,0 +1,307 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// ============================================================================
+// 1. SHARED CORE: USER, ROLE & OBYEK PENGAWASAN
+// ============================================================================
+
+enum Role {
+  ADMIN_SISTEM
+  INSPEKTUR
+  IRBAN
+  DALTEK
+  AUDITOR_PPUPD
+  SEKRETARIS
+  KASUBAG_KEPEGAWAIAN
+  STAFF_SEKRETARIAT
+  AUDITEE_OPD
+}
+
+enum StatusPegawai {
+  PNS
+  PPPK
+  HONORER
+}
+
+model User {
+  id            String        @id @default(cuid())
+  nip           String?       @unique
+  nama          String
+  email         String        @unique
+  password      String
+  role          Role          @default(AUDITOR_PPUPD)
+  statusPegawai StatusPegawai @default(PNS)
+  jabatan       String?       // Misal: "PPUPD Ahli Pertama", "Irban I"
+  golongan      String?       // Misal: "Penata Muda Tk. I (III/b)"
+  noHp          String?
+  isActive      Boolean       @default(true)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  // Relasi SIM-SEKIN
+  diklatList       DiklatPegawai[]
+  pengajuanCuti    PengajuanCuti[]  @relation("PemohonCuti")
+  verifikasiCuti   PengajuanCuti[]  @relation("AtasanVerifikator")
+  dpaDiampu        RealisasiDPA[]
+  dokumenDiupload  DokumenDigital[]
+
+  // Relasi SIMBINWAS
+  timPKPT          AnggotaTimPKPT[]
+  sptDiterima      AnggotaSPT[]
+  kkpDibuat        KKP[]            @relation("AuditorKKP")
+  reviewKKP        ReviuKKP[]
+  verifikasiTL     VerifikasiTL[]
+}
+
+model PerangkatDaerah {
+  id           String   @id @default(cuid())
+  kodeOpd      String   @unique
+  namaOpd      String   // Misal: "Dinas Pendidikan", "Kecamatan Ciruas"
+  kategori     String?  // Dinas / Badan / Kecamatan / Desa
+  createdAt    DateTime @default(now())
+
+  // Relasi SIMBINWAS
+  lhpList      LHP[]
+  tindakLanjut TindakLanjut[]
+}
+
+// ============================================================================
+// 2. MODUL SIM-SEKIN (SEKRETARIAT INTERN)
+// ============================================================================
+
+// --- A. Bangkom 120 JP APIP ---
+model DiklatPegawai {
+  id            String   @id @default(cuid())
+  pegawaiId     String
+  pegawai       User     @relation(fields: [pegawaiId], references: [id], onDelete: Cascade)
+  namaDiklat    String
+  penyelenggara String   // BPKP, Pusdiklatwas, LAN, dll
+  tglMulai      DateTime
+  tglSelesai    DateTime
+  jumlahJp      Int
+  sertifikatUrl String?
+  isVerified    Boolean  @default(false)
+  tahunAnggaran Int
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+// --- B. E-Cuti & Perizinan Digital ---
+enum JenisCuti {
+  TAHUNAN
+  SAKIT
+  ALASAN_PENTING
+  MELAHIRKAN
+  BESAR
+}
+
+enum StatusApproval {
+  DRAFT
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model PengajuanCuti {
+  id             String         @id @default(cuid())
+  pegawaiId      String
+  pegawai        User           @relation("PemohonCuti", fields: [pegawaiId], references: [id])
+  jenisCuti      JenisCuti
+  alasan         String         @db.Text
+  tglMulai       DateTime
+  tglSelesai     DateTime
+  jumlahHari     Int
+  lampiranUrl    String?
+  status         StatusApproval @default(PENDING)
+  
+  verifikatorId  String?
+  verifikator    User?          @relation("AtasanVerifikator", fields: [verifikatorId], references: [id])
+  catatanRevisi  String?        @db.Text
+  
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+}
+
+// --- C. Realisasi DPA PPTK ---
+model RealisasiDPA {
+  id             String   @id @default(cuid())
+  subKegiatan    String
+  pptkId         String
+  pptk           User     @relation(fields: [pptkId], references: [id])
+  paguAnggaran   Decimal  @db.Decimal(15, 2)
+  realisasiRp    Decimal  @default(0) @db.Decimal(15, 2)
+  targetFisik    Float    @default(0) // Persentase %
+  realisasiFisik Float    @default(0) // Persentase %
+  bulan          Int      // 1 - 12
+  tahun          Int
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+// --- D. Repositori SK, SOP & Pedoman ---
+enum KategoriDokumen {
+  SK_INSPEKTUR
+  SOP_INTERNAL
+  PERDA_PERBUP
+  PEDOMAN_TEKNIS
+}
+
+model DokumenDigital {
+  id           String          @id @default(cuid())
+  nomorDokumen String
+  judul        String
+  kategori     KategoriDokumen
+  tahun        Int
+  fileUrl      String
+  uploadedById String
+  uploadedBy   User            @relation(fields: [uploadedById], references: [id])
+  createdAt    DateTime        @default(now())
+}
+
+// ============================================================================
+// 3. MODUL SIMBINWAS (CORE FUNGSIONAL PENGAWASAN)
+// ============================================================================
+
+// --- A. Perencanaan PKPT & E-Monev ---
+enum JenisPengawasan {
+  AUDIT
+  EVALUASI
+  REVIEW
+  PEMANTAUAN
+}
+
+model PKPT {
+  id              String          @id @default(cuid())
+  tahunAnggaran   Int
+  namaKegiatan    String
+  jenisPengawasan JenisPengawasan
+  triwulanTarget  Int             // 1, 2, 3, atau 4
+  jke             Int             // Jam Kerja Efektif
+  anggaran        Decimal         @db.Decimal(15, 2)
+  status          StatusApproval  @default(DRAFT)
+  
+  anggotaTim      AnggotaTimPKPT[]
+  spt             SPT?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+}
+
+model AnggotaTimPKPT {
+  id       String @id @default(cuid())
+  pkptId   String
+  pkpt     PKPT   @relation(fields: [pkptId], references: [id], onDelete: Cascade)
+  userId   String
+  user     User   @relation(fields: [userId], references: [id])
+  peranTim String // Penanggung Jawab / Daltek / Ketua Tim / Anggota
+}
+
+// --- B. Penugasan & KKP Digital ---
+model SPT {
+  id            String       @id @default(cuid())
+  nomorSpt      String       @unique
+  nomorSrikandi String?      // Integrasi Metadata Srikandi
+  pkptId        String?      @unique
+  pkpt          PKPT?        @relation(fields: [pkptId], references: [id])
+  tglMulai      DateTime
+  tglSelesai    DateTime
+  
+  anggota       AnggotaSPT[]
+  lhp           LHP?
+  createdAt     DateTime     @default(now())
+}
+
+model AnggotaSPT {
+  id     String @id @default(cuid())
+  sptId  String
+  spt    SPT    @relation(fields: [sptId], references: [id], onDelete: Cascade)
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+}
+
+model KKP {
+  id          String     @id @default(cuid())
+  sptId       String
+  auditorId   String
+  auditor     User       @relation("AuditorKKP", fields: [auditorId], references: [id])
+  judulTemuan String
+  kondisi     String     @db.Text
+  kriteria    String     @db.Text
+  sebab       String     @db.Text
+  akibat      String     @db.Text
+  rekomendasi String     @db.Text
+  
+  reviuList   ReviuKKP[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model ReviuKKP {
+  id            String   @id @default(cuid())
+  kkpId         String
+  kkp           KKP      @relation(fields: [kkpId], references: [id], onDelete: Cascade)
+  reviewerId    String
+  reviewer      User     @relation(fields: [reviewerId], references: [id])
+  catatanReviu  String   @db.Text
+  isResolved    Boolean  @default(false)
+  createdAt     DateTime @default(now())
+}
+
+// --- C. LHP & Auto Warning ---
+model LHP {
+  id          String          @id @default(cuid())
+  nomorLhp    String          @unique
+  sptId       String          @unique
+  spt         SPT             @relation(fields: [sptId], references: [id])
+  opdId       String
+  opd         PerangkatDaerah @relation(fields: [opdId], references: [id])
+  tglLhp      DateTime
+  fileLhpUrl  String?
+  status      StatusApproval  @default(PENDING)
+  
+  tindakLanjut TindakLanjut[]
+  createdAt   DateTime        @default(now())
+}
+
+// --- D. Portal TLHP & Multi-Status Verification ---
+enum StatusTL {
+  S   // Sesuai
+  TB  // Tindak Lanjut Belum Sesuai
+  BT  // Belum Ditindaklanjuti
+  TDT // Tidak Dapat Ditindaklanjuti
+}
+
+model TindakLanjut {
+  id               String          @id @default(cuid())
+  lhpId            String
+  lhp              LHP             @relation(fields: [lhpId], references: [id])
+  opdId            String
+  opd              PerangkatDaerah @relation(fields: [opdId], references: [id])
+  kodeRekomendasi  String
+  uraianRekomendasi String         @db.Text
+  nilaiKerugianRp  Decimal         @default(0) @db.Decimal(15, 2)
+  nilaiSetorRp     Decimal         @default(0) @db.Decimal(15, 2)
+  status           StatusTL        @default(BT)
+  
+  verifikasiList   VerifikasiTL[]
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+}
+
+model VerifikasiTL {
+  id             String       @id @default(cuid())
+  tindakLanjutId String
+  tindakLanjut   TindakLanjut @relation(fields: [tindakLanjutId], references: [id], onDelete: Cascade)
+  verifikatorId  String
+  verifikator    User         @relation(fields: [verifikatorId], references: [id])
+  catatanObrik   String?      @db.Text
+  buktiUrl       String?
+  statusBaru     StatusTL
+  catatanVerifikasi String?   @db.Text
+  createdAt      DateTime     @default(now())
+}
