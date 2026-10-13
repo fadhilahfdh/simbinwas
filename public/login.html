@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Akses Masuk | SIMBINWAS Inspektorat Kabupaten Serang</title>
+  <!-- 1. Tag untuk memuat script eksternal (Tailwind CSS) -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -35,14 +36,11 @@
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col items-center justify-center p-4 relative overflow-hidden">
 
   <!-- BACKGROUND DECORATION (AMBIENT ORBS) -->
-  <!-- Orb Biru (Kiri Atas) -->
   <div class="absolute top-[-10%] left-[-5%] w-96 h-96 bg-blue-300/30 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-float-1 pointer-events-none"></div>
-  <!-- Orb Merah (Kanan Atas/Tengah) -->
   <div class="absolute top-[20%] right-[-5%] w-96 h-96 bg-red-300/20 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-float-2 pointer-events-none"></div>
-  <!-- Orb Kuning/Amber (Kiri Bawah) -->
   <div class="absolute bottom-[-10%] left-[20%] w-[30rem] h-[30rem] bg-amber-300/20 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-float-3 pointer-events-none"></div>
 
-  <!-- CONTAINER PRESISI CENTER (Z-10 agar di atas background) -->
+  <!-- CONTAINER PRESISI CENTER -->
   <div class="w-full max-w-md mx-auto my-auto flex flex-col items-center justify-center relative z-10">
     
     <!-- BRANDING LOGO -->
@@ -77,14 +75,26 @@
             </div>
           </div>
 
+          <!-- KOTAK PASSWORD -->
           <div>
             <label class="block text-xs font-bold text-slate-700 mb-1.5">Kata Sandi / Passcode</label>
-            <div class="relative">
-              <i class="fa-solid fa-key absolute left-3.5 top-3.5 text-slate-400 text-xs"></i>
-              <input type="password" id="password" value="admin123" required placeholder="••••••••"
-                class="w-full text-xs bg-slate-50/80 border border-slate-200 rounded-xl pl-9 pr-10 py-3 text-slate-800 font-medium focus:outline-none focus:border-red-500 focus:bg-white focus:ring-2 focus:ring-red-100 transition">
-              <button type="button" onclick="togglePasswordVisibility()" class="absolute right-3.5 top-3.5 text-slate-400 hover:text-slate-600 focus:outline-none">
-                <i id="eye-icon" class="fa-solid fa-eye text-xs"></i>
+            <div class="relative flex items-center w-full">
+              <span class="absolute left-3.5 text-slate-400 text-xs flex items-center pointer-events-none">
+                <i class="fa-solid fa-key"></i>
+              </span>
+              <input 
+                type="password" 
+                id="password" 
+                required 
+                placeholder="Masukkan password..." 
+                class="w-full text-xs bg-slate-50/80 border border-slate-200 rounded-xl pl-9 pr-10 py-3 text-slate-800 font-medium focus:outline-none focus:border-red-500 focus:bg-white focus:ring-2 focus:ring-red-100 transition"
+              />
+              <button 
+                type="button" 
+                onclick="togglePasswordVisibility()" 
+                class="absolute right-3.5 inset-y-0 flex items-center text-slate-400 hover:text-slate-600 focus:outline-none text-xs"
+              >
+                <i id="eye-icon" class="fa-solid fa-eye"></i>
               </button>
             </div>
           </div>
@@ -94,6 +104,17 @@
             <i class="fa-solid fa-arrow-right"></i>
           </button>
         </form>
+      </div>
+
+      <!-- TOMBOL / LINK LUPA PASSWORD -->
+      <div class="flex items-center justify-between text-xs mt-2 mb-2">
+        <label class="flex items-center gap-1.5 cursor-pointer text-slate-600">
+          <input type="checkbox" class="rounded border-slate-300 text-red-600 focus:ring-red-500">
+          <span>Ingat Saya</span>
+        </label>
+        <button type="button" onclick="showForgotPasswordModal()" class="text-red-600 font-semibold hover:underline focus:outline-none cursor-pointer">
+          <span>Lupa Password?</span> 
+        </button>
       </div>
 
       <!-- STEP 2: KODE VERIFIKASI 6 DIGIT & PROGRESS BAR -->
@@ -117,15 +138,15 @@
           </div>
         </div>
 
-        <!-- 6-DIGIT INPUT BOXES (AUTO-REPLACE & OVERWRITE READY) -->
+        <!-- 6-DIGIT INPUT BOXES -->
         <div id="otp-box-container" class="flex justify-between gap-1.5 transition" onpaste="handleOtpPaste(event)">
-  <input type="text" maxlength="1" class="otp-input bg-slate-50 border border-slate-200 rounded-xl focus:border-red-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-red-100 text-slate-900" onfocus="this.select()" onkeydown="handleOtpKeyDown(event, 0)">
-  <input type="text" maxlength="1" class="otp-input bg-slate-50 border border-slate-200 rounded-xl focus:border-red-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-red-100 text-slate-900" onfocus="this.select()" onkeydown="handleOtpKeyDown(event, 1)">
-  <input type="text" maxlength="1" class="otp-input bg-slate-50 border border-slate-200 rounded-xl focus:border-red-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-red-100 text-slate-900" onfocus="this.select()" onkeydown="handleOtpKeyDown(event, 2)">
-  <input type="text" maxlength="1" class="otp-input bg-slate-50 border border-slate-200 rounded-xl focus:border-red-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-red-100 text-slate-900" onfocus="this.select()" onkeydown="handleOtpKeyDown(event, 3)">
-  <input type="text" maxlength="1" class="otp-input bg-slate-50 border border-slate-200 rounded-xl focus:border-red-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-red-100 text-slate-900" onfocus="this.select()" onkeydown="handleOtpKeyDown(event, 4)">
-  <input type="text" maxlength="1" class="otp-input bg-slate-50 border border-slate-200 rounded-xl focus:border-red-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-red-100 text-slate-900" onfocus="this.select()" onkeydown="handleOtpKeyDown(event, 5)">
-</div>
+          <input type="text" maxlength="1" class="otp-input bg-slate-50 border border-slate-200 rounded-xl focus:border-red-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-red-100 text-slate-900" onfocus="this.select()" onkeydown="handleOtpKeyDown(event, 0)">
+          <input type="text" maxlength="1" class="otp-input bg-slate-50 border border-slate-200 rounded-xl focus:border-red-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-red-100 text-slate-900" onfocus="this.select()" onkeydown="handleOtpKeyDown(event, 1)">
+          <input type="text" maxlength="1" class="otp-input bg-slate-50 border border-slate-200 rounded-xl focus:border-red-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-red-100 text-slate-900" onfocus="this.select()" onkeydown="handleOtpKeyDown(event, 2)">
+          <input type="text" maxlength="1" class="otp-input bg-slate-50 border border-slate-200 rounded-xl focus:border-red-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-red-100 text-slate-900" onfocus="this.select()" onkeydown="handleOtpKeyDown(event, 3)">
+          <input type="text" maxlength="1" class="otp-input bg-slate-50 border border-slate-200 rounded-xl focus:border-red-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-red-100 text-slate-900" onfocus="this.select()" onkeydown="handleOtpKeyDown(event, 4)">
+          <input type="text" maxlength="1" class="otp-input bg-slate-50 border border-slate-200 rounded-xl focus:border-red-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-red-100 text-slate-900" onfocus="this.select()" onkeydown="handleOtpKeyDown(event, 5)">
+        </div>
 
         <div class="flex items-center justify-center space-x-2 pt-1">
           <div id="cross-1" class="w-7 h-7 rounded-lg border border-slate-200 bg-slate-100 flex items-center justify-center text-slate-300 transition duration-300">
@@ -180,7 +201,7 @@
             Akses Dibekukan Demi Keamanan
           </p>
           <p class="text-red-600 text-[11px] leading-relaxed">
-            Fungsi akun Anda saat ini dinonaktifkan secara otomatis. Silakan hubungi <b>Administrator Sistem Inspektorat Daerah Kabupaten Serang</b> untuk membuka kembali kunci akun.
+            Fungsi akun Anda saat ini dinonaktifkan secara otomatis. Silakan hubungi <b>Administrator Sistem Inspektorat Daerah Kabupaten Serang</b>.
           </p>
         </div>
 
@@ -200,6 +221,86 @@
 
   </div>
 
+
+  <!-- ========================================================== -->
+  <!-- MODAL / FORM LUPA PASSWORD (DIPINDAHKAN KE LUAR & DIBAWAH)  -->
+  <!-- ========================================================== -->
+  <div id="forgotPasswordModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-md transition-all duration-300 opacity-0 pointer-events-none p-4">
+    <div class="bg-white w-full max-w-md mx-auto rounded-3xl p-7 shadow-2xl shadow-slate-900/20 border border-slate-100 transform scale-95 transition-all duration-300" id="modalContainer">
+      
+      <!-- Header Modal -->
+      <div class="flex items-center justify-between border-b border-slate-100 pb-4 mb-5">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-xl bg-red-50 flex items-center justify-center text-red-600">
+            <i class="fa-solid fa-key text-xs"></i>
+          </div>
+          <h3 class="text-xs font-extrabold text-slate-800 uppercase tracking-wider">Pemulihan Kata Sandi</h3>
+        </div>
+        <button onclick="closeForgotPasswordModal()" class="w-8 h-8 rounded-full bg-slate-50 hover:bg-slate-100 text-slate-400 hover:text-slate-600 flex items-center justify-center transition">
+          <i class="fa-solid fa-xmark text-xs"></i>
+        </button>
+      </div>
+
+      <!-- TAHAP A: KIRIM OTP -->
+      <div id="forgot-step-1" class="space-y-4">
+        <p class="text-xs text-slate-500 leading-relaxed">Masukkan NIP dan Nomor Kontak/Email terdaftar untuk mendapatkan kode verifikasi.</p>
+        
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1.5">NIP Pegawai</label>
+          <div class="relative">
+            <i class="fa-solid fa-id-card absolute left-3.5 top-3.5 text-slate-400 text-xs"></i>
+            <input type="text" id="forgot-nip" placeholder="Masukkan NIP terdaftar..." 
+              class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-3 py-3 text-slate-800 font-medium focus:outline-none focus:border-red-500 focus:bg-white focus:ring-2 focus:ring-red-100 transition">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1.5">Nomor Kontak / Email</label>
+          <div class="relative">
+            <i class="fa-solid fa-address-book absolute left-3.5 top-3.5 text-slate-400 text-xs"></i>
+            <input type="text" id="forgot-kontak" placeholder="Contoh: 08123456789 atau email@domain.com" 
+              class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-3 py-3 text-slate-800 font-medium focus:outline-none focus:border-red-500 focus:bg-white focus:ring-2 focus:ring-red-100 transition">
+          </div>
+        </div>
+
+        <button type="button" onclick="requestOtp()" 
+          class="w-full bg-red-600 hover:bg-red-700 text-white font-bold text-xs py-3.5 rounded-xl transition shadow-lg shadow-red-500/25 mt-2">
+          Kirim Kode Verifikasi (OTP)
+        </button>
+      </div>
+
+      <!-- TAHAP B: INPUT OTP & PASSWORD BARU -->
+      <div id="forgot-step-2" class="hidden space-y-4">
+        <div class="bg-amber-50 border border-amber-200 text-amber-800 p-3.5 rounded-xl text-xs leading-relaxed">
+          💡 <b>Info Simulasi:</b> Kode OTP telah dicetak di konsol terminal *backend* server Anda.
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1.5">Kode Verifikasi (OTP 4 Digit)</label>
+          <input type="text" id="forgot-otp" maxlength="4" placeholder="• • • •" 
+            class="w-full text-sm bg-slate-50 border border-slate-200 rounded-xl py-3 text-center tracking-[0.5em] text-slate-800 font-extrabold focus:outline-none focus:border-red-500 focus:bg-white focus:ring-2 focus:ring-red-100 transition">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1.5">Password Baru</label>
+          <div class="relative">
+            <i class="fa-solid fa-lock absolute left-3.5 top-3.5 text-slate-400 text-xs"></i>
+            <input type="password" id="forgot-new-password" placeholder="Masukkan password baru..." 
+              class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-3 py-3 text-slate-800 font-medium focus:outline-none focus:border-red-500 focus:bg-white focus:ring-2 focus:ring-red-100 transition">
+          </div>
+        </div>
+
+        <button type="button" onclick="verifyAndResetPassword()" 
+          class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-3.5 rounded-xl transition shadow-lg shadow-emerald-500/25 mt-2">
+          Simpan & Ganti Password Baru
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- SCRIPT UTAMA -->
   <script>
     const API_BASE = '/api';
     let generatedOtp = '';
@@ -218,6 +319,98 @@
       } else {
         passInput.type = 'password';
         icon.classList.replace('fa-eye-slash', 'fa-eye');
+      }
+    }
+
+    // Fungsi Smooth Modal Lupa Password
+    function showForgotPasswordModal() {
+      const modal = document.getElementById('forgotPasswordModal');
+      const container = document.getElementById('modalContainer');
+      
+      modal.classList.remove('hidden');
+      setTimeout(() => {
+        modal.classList.remove('opacity-0', 'pointer-events-none');
+        modal.classList.add('opacity-100');
+        container.classList.remove('scale-95');
+        container.classList.add('scale-100');
+      }, 10);
+
+      document.getElementById('forgot-step-1').classList.remove('hidden');
+      document.getElementById('forgot-step-2').classList.add('hidden');
+    }
+
+    function closeForgotPasswordModal() {
+      const modal = document.getElementById('forgotPasswordModal');
+      const container = document.getElementById('modalContainer');
+
+      modal.classList.remove('opacity-100');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      container.classList.remove('scale-100');
+      container.classList.add('scale-95');
+
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 300);
+    }
+
+    async function requestOtp() {
+      const nip = document.getElementById('forgot-nip').value.trim();
+      const kontak = document.getElementById('forgot-kontak').value.trim();
+
+      if (!nip || !kontak) {
+        alert('Mohon isi NIP dan Nomor Kontak/Email terlebih dahulu.');
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/auth/forgot-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ nip, kontak })
+        });
+        const result = await response.json();
+
+        if (result.success) {
+          alert(result.message);
+          document.getElementById('forgot-step-1').classList.add('hidden');
+          document.getElementById('forgot-step-2').classList.remove('hidden');
+        } else {
+          alert(result.message || 'Gagal mengirim kode verifikasi.');
+        }
+      } catch (err) {
+        console.error(err);
+        alert('Terjadi kesalahan koneksi ke server.');
+      }
+    }
+
+    async function verifyAndResetPassword() {
+      const nip = document.getElementById('forgot-nip').value.trim();
+      const otp = document.getElementById('forgot-otp').value.trim();
+      const newPassword = document.getElementById('forgot-new-password').value.trim();
+
+      if (!otp || !newPassword) {
+        alert('Mohon isi kode OTP dan password baru.');
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/auth/verify-reset', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ nip, otp, newPassword })
+        });
+        const result = await response.json();
+
+        if (result.success) {
+          alert(result.message);
+          closeForgotPasswordModal();
+          document.getElementById('nip').value = nip;
+        } else {
+          alert(result.message || 'Gagal mereset password.');
+        }
+      } catch (err) {
+        console.error(err);
+        alert('Terjadi kesalahan koneksi ke server.');
       }
     }
 
@@ -279,16 +472,13 @@
       }, stepIntervalMs);
     }
 
-    // 1. Handler Utama Keyboard: Auto-Replace & Navigasi Panah/Backspace
     function handleOtpKeyDown(e, index) {
       const inputs = document.querySelectorAll('.otp-input');
 
-      // A. Jika menekan angka (0-9): Langsung timpa (overwrite) karakter lama
       if (/^[0-9]$/.test(e.key)) {
-        e.preventDefault(); // Matikan blokir bawaan HTML (maxlength)
-        inputs[index].value = e.key; // Timpa angka lama dengan angka baru
+        e.preventDefault();
+        inputs[index].value = e.key;
 
-        // Pindah fokus ke kotak berikutnya & otomatis blok angkanya
         if (index < 5) {
           inputs[index + 1].focus();
           inputs[index + 1].select();
@@ -298,19 +488,17 @@
         return;
       }
 
-      // B. Penanganan Tombol Backspace
       if (e.key === 'Backspace') {
         e.preventDefault();
         if (inputs[index].value) {
-          inputs[index].value = ''; // Hapus isi kotak saat ini jika ada
+          inputs[index].value = '';
         } else if (index > 0) {
-          inputs[index - 1].focus(); // Mundur ke kotak sebelumnya
+          inputs[index - 1].focus();
           inputs[index - 1].select();
         }
         return;
       }
 
-      // C. Navigasi Panah Kiri
       if (e.key === 'ArrowLeft' && index > 0) {
         e.preventDefault();
         inputs[index - 1].focus();
@@ -318,7 +506,6 @@
         return;
       }
 
-      // D. Navigasi Panah Kanan
       if (e.key === 'ArrowRight' && index < 5) {
         e.preventDefault();
         inputs[index + 1].focus();
@@ -326,13 +513,11 @@
         return;
       }
 
-      // Blokir karakter non-angka (huruf/simbol), kecuali shortcut sistem (seperti Ctrl+R atau Tab)
       if (e.key.length === 1 && !e.ctrlKey && !e.metaKey) {
         e.preventDefault();
       }
     }
 
-    // 2. Helper Pengecekan Ketersediaan 6 Digit Kode
     function checkAndVerifyOtp() {
       const inputs = document.querySelectorAll('.otp-input');
       let enteredOtp = '';
@@ -343,7 +528,6 @@
       }
     }
 
-    // 3. Handler Tempel Kode (Paste)
     function handleOtpPaste(e) {
       e.preventDefault();
       const pasteData = e.clipboardData.getData('text').trim();
@@ -356,7 +540,6 @@
       }
     }
 
-    // 4. Verifikasi Kode OTP Ke Sistem
     function verifyOtpCode(enteredOtp) {
       const alertBox = document.getElementById('alert-box');
       alertBox.classList.add('hidden');

@@ -18,7 +18,7 @@ enum Role {
   DALTEK
   AUDITOR_PPUPD
   SEKRETARIS
-  KASUBAG_KEPEGAWAIAN
+  KASUBAG
   STAFF_SEKRETARIAT
   AUDITEE_OPD
 }
@@ -57,6 +57,7 @@ model User {
   kkpDibuat        KKP[]            @relation("AuditorKKP")
   reviewKKP        ReviuKKP[]
   verifikasiTL     VerifikasiTL[]
+@@map("users")
 }
 
 model PerangkatDaerah {

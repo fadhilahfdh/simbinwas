@@ -3,13 +3,13 @@ const { Pool } = require('pg');
 const pool = new Pool({
   user: 'postgres',
   host: 'localhost',
-  database: 'sim_inspektorat',
-  password: 'Mobilbutut@22', // Masukkan password baru yang diset di pgAdmin tadi
+  database: 'simbinwas_db', // Ganti dengan nama database yang sesuai
+  password: 'admin123', // Masukkan password baru yang diset di pgAdmin tadi
   port: 5432,
 });
 
 pool.on('connect', () => {
-  console.log('⚡ [SIMBINWAS] Berhasil terhubung ke database PostgreSQL (sim_inspektorat)');
+  console.log('⚡ [SIMBINWAS] Berhasil terhubung ke database PostgreSQL (simbinwas_db)');
 });
 
 pool.on('error', (err) => {
